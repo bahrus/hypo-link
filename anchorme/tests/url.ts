@@ -1,5 +1,5 @@
-import {isPort} from "../util";
-import {tlds as tlds} from "../lists";
+import {isPort} from "../util.js";
+import {tlds as tlds} from "../lists.js";
 
 const pattern = /^(https?:\/\/|ftps?:\/\/)?([a-z0-9%\-]+\.){1,}([a-z0-9\-]+)?(:(\d{1,5}))?(\/([a-z0-9\-._~:\/\?#\[\]@!$&'\(\)\*\+,;=%]+)?)?$/i;
 
