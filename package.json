@@ -6,11 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "xtal-latx": "0.0.88"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/hypo-link.git"
   },
-  "author": "",
+  "author": "anderson.bruce.b@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bahrus/hypo-link/issues"
