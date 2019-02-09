@@ -6,6 +6,10 @@
             "description": "Web component wrapper around the anchorme library.",
             "attributes": [
                 {
+                    "name": "raw-content",
+                    "description": "String to hyperlink.  Gets set from innerText initially."
+                },
+                {
                     "name": "truncate",
                     "description": "Trucate the link text"
                 },

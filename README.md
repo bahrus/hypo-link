@@ -49,7 +49,7 @@ Web component wrapper around the [anchorme library](http://alexcorvi.github.io/a
 <custom-element-demo>
 <template>
     <div>
-        <wc-info package-name="npm.hypo-link" href="https://unpkg.com/hypo-link@0.0.5/html.json"></wc-info>
+        <wc-info package-name="npm.hypo-link" href="https://unpkg.com/hypo-link@0.0.10/html.json"></wc-info>
         <script type="module" src="https://unpkg.com/wc-info@0.0.26/wc-info.js?module"></script>
     </div>
 </template>
