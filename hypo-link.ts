@@ -81,7 +81,14 @@ export class HypoLink extends XtallatX(HTMLElement){
     set rawContent(val) {
         this.attr(raw_content, val);
     }
-    _options: Options = {};
+    _options: Options = {
+        attributes: [
+            {
+                name: 'target',
+                value: '_blank'
+            }
+        ]
+    };
     _truncate: number | [number, number] | undefined;
     get truncate(){
         return this._truncate;
@@ -134,7 +141,7 @@ export class HypoLink extends XtallatX(HTMLElement){
                 return;
             }
         }
-        this.innerHTML = anchorme(this._rawContent);
+        this.innerHTML = anchorme(this._rawContent, this._options);
 
     }
 }

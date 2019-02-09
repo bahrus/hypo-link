@@ -1,3 +1,9 @@
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/hypo-link)
+
+<a href="https://nodei.co/npm/hypo-link/"><img src="https://nodei.co/npm/hypo-link.png"></a>
+
+<img src="https://badgen.net/bundlephobia/minzip/hypo-link">
+
 # hypo-link
 
 Web component wrapper around the [anchorme library](http://alexcorvi.github.io/anchorme.js/).
@@ -17,7 +23,7 @@ Web component wrapper around the [anchorme library](http://alexcorvi.github.io/a
             width: 480px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/hypo-link@0.0.5/hypo-link.js?module"></script>
+    <script type="module" src="https://unpkg.com/hypo-link@0.0.6/hypo-link.js?module"></script>
 </template>
 </custom-element-demo>
 ```

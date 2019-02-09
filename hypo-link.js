@@ -12,7 +12,14 @@ const exclude_files = 'exclude-files';
 export class HypoLink extends XtallatX(HTMLElement) {
     constructor() {
         super(...arguments);
-        this._options = {};
+        this._options = {
+            attributes: [
+                {
+                    name: 'target',
+                    value: '_blank'
+                }
+            ]
+        };
     }
     static get is() { return 'hypo-link'; }
     static get observedAttributes() {
@@ -116,7 +123,7 @@ export class HypoLink extends XtallatX(HTMLElement) {
                 return;
             }
         }
-        this.innerHTML = anchorme(this._rawContent);
+        this.innerHTML = anchorme(this._rawContent, this._options);
     }
 }
 define(HypoLink);
