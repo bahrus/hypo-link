@@ -1,6 +1,6 @@
-import { deSeparate } from "../separate/separate";
-import identify from "./identify";
-import { separate } from "../separate/separate";
+import { deSeparate } from "../separate/separate.js";
+import identify from "./identify.js";
+import { separate } from "../separate/separate.js";
 export default function (str, options) {
     var arr = separate(str);
     var identified = identify(arr, options);

@@ -1,4 +1,4 @@
-import fix from "./fix";
+import fix from "./fix.js";
 /**
  *
  * Split the string with word separators

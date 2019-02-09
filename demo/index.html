@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dev</title>
+    <title>Index</title>
 </head>
 <body>
     <hypo-link>
@@ -18,6 +18,19 @@
             width: 480px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/hypo-link@0.0.6/hypo-link.js?module"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
+    <script type="importmap-shim">
+      {
+        "imports": {
+          "xtal-latx/": "https://cdn.jsdelivr.net/npm/xtal-latx@0.0.88/",
+          "hypo-link/": "https://cdn.jsdelivr.net/npm/hypo-link@0.0.6/"
+        }
+      }
+      </script>
+      
+    <script  type="module-shim">
+      import 'hypo-link/hypo-link.js';
+    </script>
 </body>
 </html>

@@ -1,8 +1,8 @@
-import {Options} from "../util";
-import {URLObj} from "../util";
-import {deSeparate} from "../separate/separate";
-import identify from "./identify";
-import {separate} from "../separate/separate";
+import {Options} from "../util.js";
+import {URLObj} from "../util.js";
+import {deSeparate} from "../separate/separate.js";
+import identify from "./identify.js";
+import {separate} from "../separate/separate.js";
 
 export default function(str: string,options:Options):string|Array<URLObj>{
 

@@ -1,10 +1,10 @@
-import {Options} from "../util";
-import {URLObj} from "../util";
-import emailChecker from "../tests/email";
-import hasProtocol from "../tests/hasprotocol";
-import {htmlAttrs} from "../lists";
-import ipChecker from "../tests/ip";
-import urlChecker from "../tests/url";
+import {Options} from "../util.js";
+import {URLObj} from "../util.js";
+import emailChecker from "../tests/email.js";
+import hasProtocol from "../tests/hasprotocol.js";
+import {htmlAttrs} from "../lists.js";
+import ipChecker from "../tests/ip.js";
+import urlChecker from "../tests/url.js";
 
 export default function (inputArr:Array<string>, options:Options) {
 	return inputArr.map((fragment,index)=>{

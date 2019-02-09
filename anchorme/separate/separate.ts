@@ -1,5 +1,5 @@
-import fix from "./fix";
-import {URLObj} from "../util";
+import fix from "./fix.js";
+import {URLObj} from "../util.js";
 
 
 /**

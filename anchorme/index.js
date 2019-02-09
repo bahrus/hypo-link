@@ -1,8 +1,8 @@
-import { defaultOptions as defaultOptions } from "./util";
+import { defaultOptions as defaultOptions } from "./util.js";
 import emailChecker from "./tests/email.js";
 import ipChecker from "./tests/ip.js";
 import urlChecker from "./tests/url.js";
-import transform from "./transform/transform";
+import transform from "./transform/transform.js";
 import hasprotocol from "./tests/hasprotocol.js";
 export const anchorme = function (str, options) {
     options = defaultOptions(options);

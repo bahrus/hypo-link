@@ -1,8 +1,8 @@
-import emailChecker from "../tests/email";
-import hasProtocol from "../tests/hasprotocol";
-import { htmlAttrs } from "../lists";
-import ipChecker from "../tests/ip";
-import urlChecker from "../tests/url";
+import emailChecker from "../tests/email.js";
+import hasProtocol from "../tests/hasprotocol.js";
+import { htmlAttrs } from "../lists.js";
+import ipChecker from "../tests/ip.js";
+import urlChecker from "../tests/url.js";
 export default function (inputArr, options) {
     return inputArr.map((fragment, index) => {
         var encoded = encodeURI(fragment);

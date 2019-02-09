@@ -1,4 +1,4 @@
-import {tlds as tlds} from "../lists";
+import {tlds as tlds} from "../lists.js";
 
 // pattern that an emails MUST have
 const pattern = /^[a-z0-9!#$%&'*+\-/=?^_`{|}~.]+@([a-z0-9%\-]+\.){1,}([a-z0-9\-]+)?$/i

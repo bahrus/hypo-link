@@ -1,4 +1,4 @@
-import {isPort} from "../util";
+import {isPort} from "../util.js";
 
 // general IP pattern https://regex101.com/r/rzUcJ4/1
 const pattern = /^(\d{1,3}\.){3}\d{1,3}(:\d{1,5})?(\/([a-z0-9\-._~:\/\?#\[\]@!$&'\(\)\*\+,;=%]+)?)?$/i;
