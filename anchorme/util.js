@@ -12,7 +12,7 @@ export function defaultOptions(options) {
             urls: true,
             files: true,
             truncate: Infinity,
-            defaultProtocol: "http://",
+            defaultProtocol: "https://",
             list: false
         };
     }

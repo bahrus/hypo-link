@@ -40,7 +40,7 @@ export function defaultOptions(options:Options|undefined):Options{
 			urls:true,
 			files:true,
 			truncate:Infinity,
-			defaultProtocol:"http://",
+			defaultProtocol:"https://",
 			list:false
 		};
 	}
