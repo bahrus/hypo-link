@@ -23,7 +23,20 @@ Web component wrapper around the [anchorme library](http://alexcorvi.github.io/a
             width: 480px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/hypo-link@0.0.6/hypo-link.js?module"></script>
+    <!-- Use experimental import maps -->
+    <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
+    <script type="importmap-shim">
+      {
+        "imports": {
+          "xtal-latx/": "https://cdn.jsdelivr.net/npm/xtal-latx@0.0.88/",
+          "hypo-link/": "https://cdn.jsdelivr.net/npm/hypo-link@0.0.8/"
+        }
+      }
+      </script>
+      
+    <script  type="module-shim">
+      import 'hypo-link/hypo-link.js';
+    </script>
 </template>
 </custom-element-demo>
 ```
