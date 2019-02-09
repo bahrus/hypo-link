@@ -17,7 +17,7 @@ Web component wrapper around the [anchorme library](http://alexcorvi.github.io/a
             width: 480px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/hypo-link@0.0.1/hypo-link.js?module"></script>
+    <script type="module" src="https://unpkg.com/hypo-link@0.0.3/hypo-link.js?module"></script>
 </template>
 </custom-element-demo>
 ```
