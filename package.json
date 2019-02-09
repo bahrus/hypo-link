@@ -1,7 +1,7 @@
 {
   "name": "hypo-link",
   "version": "0.0.4",
-  "description": "TBD",
+  "description": "Web component wrapper around the [anchorme library]",
   "main": "hypo-link.js",
   "module": "hypo-link.js",
   "scripts": {

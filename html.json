@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "tags": [
+        {
+            "name": "hypo-link",
+            "description": "Web component wrapper around the anchorme library.",
+            "attributes": [
+                {
+                    "name": "truncate",
+                    "description": "Trucate the link text"
+                },
+                {
+                    "name": "default-protocol",
+                    "description": "If the link came without protocol, like www.google.com then anchorme will add the https:// by default. However you can set your own default protocol."
+                },
+                {
+                    "name": "exclude-emails",
+                    "description": "Exclude email links"
+                },
+                {
+                    "name": "exclude-urls",
+                    "description": "Exclude url links"
+                },
+                {
+                    "name": "exclude-ips",
+                    "description": "Exclude ips links"
+                },
+                {
+                    "name": "exclude-files",
+                    "description": "Exclude file links"
+                }
+            ]
+        }
+    ]
+}
