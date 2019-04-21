@@ -15,7 +15,7 @@ Example (only viewable at [webcomponents.org](https://www.webcomponents.org/elem
 <custom-element-demo>
 <template>
     <hypo-link>
-            Mueller filed an indictment just as the President left for G-20.In July he indicted the Russians 
+            Mueller filed an indictment just as the President left for G-20.In  July he indicted the Russians 
             who will never come here just before he left for Helsinki.Either could have been done earlier or later. 
             Out of control!Supervision please?
     </hypo-link>
@@ -30,8 +30,9 @@ Example (only viewable at [webcomponents.org](https://www.webcomponents.org/elem
     <script type="importmap-shim">
       {
         "imports": {
-          "xtal-latx/": "https://cdn.jsdelivr.net/npm/xtal-latx@0.0.88/",
-          "hypo-link/": "https://cdn.jsdelivr.net/npm/hypo-link@0.0.8/"
+          "xtal-element/": "https://cdn.jsdelivr.net/npm/xtal-element@0.0.52/",
+          "hypo-link/": "https://cdn.jsdelivr.net/npm/hypo-link@0.0.11/",
+          "trans-render/": "https://cdn.jsdelivr.net/npm/trans-render@0.0.102/"
         }
       }
       </script>
