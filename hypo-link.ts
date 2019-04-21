@@ -1,5 +1,6 @@
-import {XtallatX} from 'xtal-latx/xtal-latx.js';
-import {define} from 'xtal-latx/define.js';
+import {XtallatX} from 'xtal-element/xtal-latx.js';
+import {define} from 'trans-render/define.js';
+import {hydrate, up} from 'trans-render/hydrate.js';
 import {anchorme} from './anchorme/index.js';
 import {Options, AttributeFunction, AttributeObj, URLObj} from "./anchorme/util.js";
 const raw_content = 'raw-content';
@@ -11,7 +12,7 @@ const exclude_emails = 'exclude-emails';
 const exclude_urls = 'exclude-urls';
 const exclude_ips = 'exclude-ips';
 const exclude_files = 'exclude-files';
-export class HypoLink extends XtallatX(HTMLElement){
+export class HypoLink extends XtallatX(hydrate(HTMLElement)){
     static get is(){return 'hypo-link';}
     static get observedAttributes(){
         return super.observedAttributes.concat([raw_content, truncate, default_protocol, exclude_emails, exclude_urls, exclude_ips, exclude_files]);
@@ -127,7 +128,7 @@ export class HypoLink extends XtallatX(HTMLElement){
     _c! : boolean;
     connectedCallback(){
         this._c = true;
-        this._upgradeProperties(['rawContent', truncate, 'linkAttributes', 'defaultProtocol', 'excludeEmails', 
+        this[up](['rawContent', truncate, 'linkAttributes', 'defaultProtocol', 'excludeEmails', 
             'excludeUrls', 'excludeIps', 'excludeFiles']);
         this.onPropsChange();
     }

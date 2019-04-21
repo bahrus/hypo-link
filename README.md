@@ -8,12 +8,14 @@
 
 Web component wrapper around the [anchorme library](http://alexcorvi.github.io/anchorme.js/).
 
+Example (only viewable at [webcomponents.org](https://www.webcomponents.org/element/hypo-link))
+
 <!--
 ```
 <custom-element-demo>
 <template>
     <hypo-link>
-            Mueller filed an indictment just as the President left for G-20.In  July he indicted the Russians 
+            Mueller filed an indictment just as the President left for G-20.In July he indicted the Russians 
             who will never come here just before he left for Helsinki.Either could have been done earlier or later. 
             Out of control!Supervision please?
     </hypo-link>
