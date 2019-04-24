@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "xtal-element": "0.0.55",
-    "trans-render": "0.0.104"
+    "xtal-element": "0.0.58",
+    "trans-render": "0.0.110"
   },
   "repository": {
     "type": "git",
