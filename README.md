@@ -59,3 +59,9 @@ Example (only viewable at [webcomponents.org](https://www.webcomponents.org/elem
 </custom-element-demo>
 ```
 -->
+
+## Running
+
+1.  Install node
+2.  Run "npm install" from location of folder
+3.  Run npm run serve.  Open browser to url specified.
