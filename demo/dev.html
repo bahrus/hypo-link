@@ -7,6 +7,7 @@
     <title>Dev</title>
   </head>
   <body>
+    <xtal-sip><script nomodule>["hypo-link"]</script></xtal-sip>
     <hypo-link>
       Mueller filed an indictment just as the President left for G-20.In July he
       indicted the Russians who will never come here just before he left for
@@ -19,6 +20,20 @@
         width: 480px;
       }
     </style>
-    <script type="module" src="../hypo-link.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.4/dist/es-module-shims.js"></script>
+    <script type="importmap-shim">
+    {
+        "imports": {
+            "xtal-element/": "../node_modules/xtal-element/",
+            "trans-render/": "../node_modules/trans-render/",
+            "xtal-sip": "https://cdn.jsdelivr.net/npm/xtal-sip@0.0.85/xtal-sip.js",
+            "hypo-link": "../hypo-link.js"
+        }
+    }
+    </script>
+    <script  type="module-shim">
+        import 'xtal-sip';
+    </script>
   </body>
 </html>

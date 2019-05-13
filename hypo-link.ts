@@ -1,6 +1,6 @@
 import {XtallatX} from 'xtal-element/xtal-latx.js';
 import {define} from 'trans-render/define.js';
-import {hydrate, up} from 'trans-render/hydrate.js';
+import {hydrate} from 'trans-render/hydrate.js';
 import {anchorme} from './anchorme/index.js';
 import {Options, AttributeFunction, AttributeObj, URLObj} from "./anchorme/util.js";
 const raw_content = 'raw-content';
@@ -128,7 +128,7 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)){
     _c! : boolean;
     connectedCallback(){
         this._c = true;
-        this[up](['rawContent', truncate, 'linkAttributes', 'defaultProtocol', 'excludeEmails', 
+        this.propUp(['rawContent', truncate, 'linkAttributes', 'defaultProtocol', 'excludeEmails', 
             'excludeUrls', 'excludeIps', 'excludeFiles']);
         this.onPropsChange();
     }
