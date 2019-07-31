@@ -4,7 +4,7 @@
         {
             "name": "hypo-link",
             "description": "Web component wrapper around the anchorme library.",
-            "selfResolvingModulePath": "https://unpkg.com/hypo-link@0.0.15/hypo-link.js?module",
+            "selfResolvingModulePath": "https://unpkg.com/hypo-link@0.0.18/hypo-link.js?module",
             "attributes": [
                 {
                     "name": "raw-content",

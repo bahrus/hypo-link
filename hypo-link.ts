@@ -142,7 +142,7 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)){
                 return;
             }
         }
-        this.innerHTML = anchorme(this._rawContent, this._options);
+        this.innerHTML = (this._rawContent === null) ? '' :  anchorme(this._rawContent, this._options);
 
     }
 }
