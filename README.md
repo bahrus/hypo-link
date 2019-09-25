@@ -8,7 +8,8 @@
 
 Web component wrapper around the [anchorme library](http://alexcorvi.github.io/anchorme.js/).
 
-Example (only viewable at [webcomponents.org](https://www.webcomponents.org/element/hypo-link))
+[Demo](https://jsfiddle.net/bahrus/faLyekgz/)
+
 
 <!--
 ```
@@ -25,21 +26,7 @@ Example (only viewable at [webcomponents.org](https://www.webcomponents.org/elem
             width: 480px;
         }
     </style>
-    <!-- Use experimental import maps -->
-    <script defer src="https://cdn.jsdelivr.net/npm/es-module-shims@0.2.0/dist/es-module-shims.js"></script>
-    <script type="importmap-shim">
-      {
-        "imports": {
-          "xtal-element/": "https://cdn.jsdelivr.net/npm/xtal-element@0.0.52/",
-          "hypo-link/": "https://cdn.jsdelivr.net/npm/hypo-link@0.0.11/",
-          "trans-render/": "https://cdn.jsdelivr.net/npm/trans-render@0.0.102/"
-        }
-      }
-      </script>
-      
-    <script  type="module-shim">
-      import 'hypo-link/hypo-link.js';
-    </script>
+    <script type="module" src="https://unpkg.com/hypo-link@0.0.19/hypo-link.js?module"></script>
 </template>
 </custom-element-demo>
 ```
