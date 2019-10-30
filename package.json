@@ -6,20 +6,21 @@
   "module": "hypo-link.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node node_modules/xtal-test/serve.js"
+    "serve": "node node_modules/xtal-test/serve.js",
+    "doc": "wca analyze hypo-link.js --outFile custom-elements.json"
   },
   "dependencies": {
-    "xtal-element": "0.0.84",
-    "trans-render": "0.0.132"
+    "xtal-element": "0.0.87",
+    "trans-render": "0.0.136"
   },
   "devDependencies": {
-    "@types/node": "12.0.7",
+    "@types/node": "12.12.3",
     "@types/tape": "4.2.33",
-    "@webcomponents/webcomponentsjs": "2.2.10",
+    "@webcomponents/webcomponentsjs": "2.3.0",
     "jiife": "0.0.14",
-    "tape": "4.10.2",
-    "xtal-test": "0.0.20",
-    "es-module-shims": "0.4.5"
+    "tape": "4.11.0",
+    "xtal-test": "0.0.21",
+    "es-module-shims": "0.4.6"
   },
   "repository": {
     "type": "git",

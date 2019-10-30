@@ -10,6 +10,11 @@ const exclude_emails = 'exclude-emails';
 const exclude_urls = 'exclude-urls';
 const exclude_ips = 'exclude-ips';
 const exclude_files = 'exclude-files';
+/**
+ * Web component wrapper around the anchorme library.
+ * @element hypo-link
+ *
+ */
 export class HypoLink extends XtallatX(hydrate(HTMLElement)) {
     constructor() {
         super(...arguments);
@@ -59,30 +64,55 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)) {
         this.onPropsChange();
     }
     get excludeEmails() { return this._excludeEmails; }
+    /**
+     * Exclude email links.
+     * @attr 'exclude-emails'
+     */
     set excludeEmails(nv) {
         this.attr(exclude_emails, nv, '');
     }
     get excludeUrls() { return this._excludeUrls; }
+    /**
+     * Exclude url links.
+     * @attr exclude-urls
+     */
     set excludeUrls(nv) {
         this.attr(exclude_urls, nv, '');
     }
     get excludeIps() { return this._excludeIps; }
+    /**
+     * Exclude ips links
+     * @attr exclude-ips
+     */
     set excludeIps(nv) {
         this.attr(exclude_ips, nv, '');
     }
     get excludeFiles() { return this._excludeFiles; }
+    /**
+     * Exclude file links.
+     * @attr exclude-files
+     */
     set excludeFiles(nv) {
         this.attr(exclude_files, nv, '');
     }
     get rawContent() {
         return this._rawContent;
     }
+    /**
+     * String to hyperlink.  Gets set from innerText initially.
+     * @attr raw-content
+     */
     set rawContent(val) {
         this.attr(raw_content, val);
     }
     get truncate() {
         return this._truncate;
     }
+    /**
+     * Trucate the link text to this number of characters.
+     * @attr
+     * @type {number}
+     */
     set truncate(nv) {
         //this._truncate = nv;
         this.attr(truncate, JSON.stringify(nv));
@@ -90,6 +120,9 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)) {
     get linkAttributes() {
         return this._linkAttributes;
     }
+    /**
+     * Link Attributes
+     */
     set linkAttributes(nv) {
         this._linkAttributes = nv;
         this._options.attributes = nv;

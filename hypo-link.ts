@@ -12,6 +12,12 @@ const exclude_emails = 'exclude-emails';
 const exclude_urls = 'exclude-urls';
 const exclude_ips = 'exclude-ips';
 const exclude_files = 'exclude-files';
+
+/**
+ * Web component wrapper around the anchorme library.
+ * @element hypo-link
+ * 
+ */
 export class HypoLink extends XtallatX(hydrate(HTMLElement)){
     static get is(){return 'hypo-link';}
     static get observedAttributes(){
@@ -52,24 +58,40 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)){
 
     _excludeEmails: boolean | undefined;
     get excludeEmails(){return this._excludeEmails;}
+    /**
+     * Exclude email links.
+     * @attr 'exclude-emails'
+     */
     set excludeEmails(nv){
         this.attr(exclude_emails, nv!, '');
     }
 
     _excludeUrls: boolean | undefined;
     get excludeUrls(){return this._excludeUrls;}
+    /**
+     * Exclude url links.
+     * @attr exclude-urls
+     */
     set excludeUrls(nv){
         this.attr(exclude_urls, nv!, '');
     }
 
     _excludeIps: boolean | undefined;
     get excludeIps(){return this._excludeIps;}
+    /**
+     * Exclude ips links
+     * @attr exclude-ips
+     */
     set excludeIps(nv){
         this.attr(exclude_ips, nv!, '');
     }
 
     _excludeFiles: boolean | undefined;
     get excludeFiles(){return this._excludeFiles;}
+    /**
+     * Exclude file links.
+     * @attr exclude-files
+     */
     set excludeFiles(nv){
         this.attr(exclude_files, nv!, '');
     }
@@ -79,6 +101,10 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)){
     get rawContent() {
         return this._rawContent;
     }
+    /**
+     * String to hyperlink.  Gets set from innerText initially.
+     * @attr raw-content
+     */
     set rawContent(val) {
         this.attr(raw_content, val);
     }
@@ -94,6 +120,11 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)){
     get truncate(){
         return this._truncate;
     }
+    /**
+     * Trucate the link text to this number of characters.
+     * @attr
+     * @type {number}
+     */
     set truncate(nv){
         //this._truncate = nv;
         this.attr(truncate, JSON.stringify(nv));
@@ -103,6 +134,9 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)){
     get linkAttributes(){
         return this._linkAttributes;
     }
+    /**
+     * Link Attributes
+     */
     set linkAttributes(nv){
         this._linkAttributes = nv;
         this._options.attributes = nv;
