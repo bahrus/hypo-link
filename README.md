@@ -6,7 +6,6 @@
 
 # hypo-link
 
-Web component wrapper around the [anchorme library](http://alexcorvi.github.io/anchorme.js/).
 
 [Demo](https://jsfiddle.net/bahrus/faLyekgz/)
 
