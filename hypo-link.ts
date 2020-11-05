@@ -1,5 +1,5 @@
-import {XtallatX, define, AttributeProps} from 'xtal-element/xtal-latx.js';
-import {hydrate} from 'trans-render/hydrate.js';
+import {XtalElement, define, AttributeProps, TransformValueOptions, SelectiveUpdate, RenderContext} from 'xtal-element/XtalElement.js';
+import {createTemplate} from 'trans-render/createTemplate.js';
 //const raw_content = 'raw-content';
 //https://stackoverflow.com/a/42659038/3320028
 
@@ -14,8 +14,9 @@ const domains = ['com','ru','net','org','de','jp','uk','br','pl','in','it','fr',
 
 export function isUrl(s: string) {
     if (!rx_url.test(s)) return false;
-    for (let i=0, ii = prefixes.length; i < ii; i++) if (s.startsWith(prefixes[i])) return true;
-    for (let i=0, ii = domains.length; i < ii; i++) if (s.endsWith('.'+ domains[i]) || s.includes('.'+ domains[i]+'\/') ||s.includes('.'+ domains[i]+'?')) return true;
+    const sLC = s.toLowerCase();
+    for (let i=0, ii = prefixes.length; i < ii; i++) if (sLC.startsWith(prefixes[i])) return true;
+    for (let i=0, ii = domains.length; i < ii; i++) if (sLC.endsWith('.'+ domains[i]) || sLC.includes('.'+ domains[i]+'\/') ||sLC.includes('.'+ domains[i]+'?')) return true;
     return false;
 }
 
@@ -43,24 +44,78 @@ export function parseText(s: string){
     const split = s.split(' ');
     split.forEach((token, idx) => {
         if(isUrl(token)){
-            split[idx] = `<a href="//${token}" target=_blank>token</a>`;
+            split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
         }else if(isEmail(token)){
-            split[idx] = `<a href="mailto:${token}" target=_blank>token</a>`;
+            split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
         }
     });
     return split.join(' ');
 }
 
+const mainTemplate = createTemplate(/* html */`
+<slot style="display:none"></slot>
+<div part=linkedText></div>
+`);
+
+const linkedText = Symbol('linkedText');
+const initTransform = ({self}: HypoLink) => ({
+    slot:[{},{slotchange: self.handleSlotChange}],
+    div: linkedText,
+} as TransformValueOptions);
+
+const updateTransforms = [
+    ({processedContent}: HypoLink) => ({
+        [linkedText]: ({target}: RenderContext<HTMLDivElement) => {
+            target!.innerHTML = processedContent!;
+        }
+    })
+] as SelectiveUpdate<any>[];
+
+const linkProcessedContent = ({rawContent, self}: HypoLink) => {
+    if(rawContent === undefined) return;
+    self.processedContent = parseText(rawContent);
+}
+
+const propActions = [linkProcessedContent];
+
 /**
  * @element hypo-link
  * 
  */
-export class HypoLink extends XtallatX(hydrate(HTMLElement)){
+export class HypoLink extends XtalElement{
     static is = 'hypo-link';
-    static attributeProps = ({excludeEmails, excludeUrls}: HypoLink) => ({
+    static attributeProps = ({excludeEmails, excludeUrls, rawContent, processedContent}: HypoLink) => ({
         bool:[excludeEmails, excludeUrls],
-        reflect: [ excludeEmails, excludeUrls]
+        reflect: [ excludeEmails, excludeUrls],
+        str: [rawContent, processedContent]
     } as AttributeProps);
+
+    mainTemplate = mainTemplate;
+    readyToInit = true;
+    readyToRender = true;
+    initTransform = initTransform;
+    updateTransforms = updateTransforms;
+    propActions = propActions;
+
+    handleSlotChange(e: Event){
+        const slot = e.target as HTMLSlotElement;
+        const nodes = slot.assignedNodes();
+        let text = '';
+        nodes.forEach(node => {
+            //const aNode = node as any;
+            switch(node.nodeType){
+                case 1:
+                    const eNode = node as HTMLElement;
+                    text += eNode.innerText;
+                    break;
+                case 3:
+                    text += node.nodeValue;
+                    break;
+            }
+        });
+        this.rawContent = text;
+    }
+
 
     /**
      * Exclude email links.
@@ -81,21 +136,12 @@ export class HypoLink extends XtallatX(hydrate(HTMLElement)){
      */
     rawContent: string | undefined;
 
+    /**
+     * @private
+     */
+    processedContent: string | undefined;
 
-
-
-    // onPropsChange() {
-    //     if (!this._c) return;
-    //     if(this._rawContent === undefined){
-    //         if(this.firstChild !== null) {
-    //             this.rawContent = this.innerText;
-    //         }else{
-    //             return;
-    //         }
-    //     }
-    //     this.innerHTML = (this._rawContent === null) ? '' :  anchorme(this._rawContent, this._options);
-
-    // }
+    
 }
 
 define(HypoLink);
