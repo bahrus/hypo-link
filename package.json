@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node node_modules/xtal-test/serve.js",
-    "doc": "wca analyze hypo-link.js --outFile custom-elements.json"
+    "doc": "wca analyze hypo-link-example-0.js --outFile custom-elements.json"
   },
   "dependencies": {
     "xtal-element": "0.0.312",

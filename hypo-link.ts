@@ -40,30 +40,30 @@ export function isEmail(s: string) {
     return rx_email.test(s);
 }
 
-export function parseText(s: string){
+export function parseText(s: string, excludeEmails: boolean | undefined, excludeUrls: boolean | undefined){
     const split = s.split(' ');
     split.forEach((token, idx) => {
-        if(isUrl(token)){
+        if(!excludeUrls && isUrl(token)){
             split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
-        }else if(isEmail(token)){
+        }else if(!excludeEmails && isEmail(token)){
             split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
         }
     });
     return split.join(' ');
 }
 
-const mainTemplate = createTemplate(/* html */`
+export const mainTemplate = createTemplate(/* html */`
 <slot style="display:none"></slot>
 <div part=linkedText></div>
 `);
 
 const linkedText = Symbol('linkedText');
-const initTransform = ({self}: HypoLink) => ({
+export const initTransform = ({self}: HypoLink) => ({
     slot:[{},{slotchange: self.handleSlotChange}],
     div: linkedText,
 } as TransformValueOptions);
 
-const updateTransforms = [
+export const updateTransforms = [
     ({processedContent}: HypoLink) => ({
         [linkedText]: ({target}: RenderContext<HTMLDivElement) => {
             target!.innerHTML = processedContent!;
@@ -71,12 +71,12 @@ const updateTransforms = [
     })
 ] as SelectiveUpdate<any>[];
 
-const linkProcessedContent = ({rawContent, self}: HypoLink) => {
+const linkProcessedContent = ({rawContent, self, excludeEmails, excludeUrls}: HypoLink) => {
     if(rawContent === undefined) return;
-    self.processedContent = parseText(rawContent);
+    self.processedContent = parseText(rawContent, excludeEmails, excludeUrls);
 }
 
-const propActions = [linkProcessedContent];
+export const propActions = [linkProcessedContent];
 
 /**
  * @element hypo-link
@@ -136,9 +136,7 @@ export class HypoLink extends XtalElement{
      */
     rawContent: string | undefined;
 
-    /**
-     * @private
-     */
+
     processedContent: string | undefined;
 
     

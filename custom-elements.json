@@ -1,123 +1,62 @@
 {
-  "version": 2,
+  "version": "experimental",
   "tags": [
     {
       "name": "hypo-link",
-      "description": "Web component wrapper around the anchorme library.",
-      "jsDoc": "/**\n * Web component wrapper around the anchorme library.\n * @element hypo-link\n *\n */",
+      "path": "./hypo-link-example-0.js",
       "attributes": [
         {
-          "name": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "jsDoc": "/**\r\n         * Any component that emits events should not do so if it is disabled.\r\n         * Note that this is not enforced, but the disabled property is made available.\r\n         * Users of this mix-in should ensure not to call \"de\" if this property is set to true.\r\n         * @attr\r\n         */",
-          "type": "boolean"
-        },
-        {
-          "name": "'exclude-emails'",
+          "name": "exclude-emails",
           "description": "Exclude email links.",
-          "jsDoc": "/**\n     * Exclude email links.\n     * @attr 'exclude-emails'\n     */",
           "type": "boolean | undefined"
         },
         {
           "name": "exclude-urls",
           "description": "Exclude url links.",
-          "jsDoc": "/**\n     * Exclude url links.\n     * @attr exclude-urls\n     */",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "exclude-ips",
-          "description": "Exclude ips links",
-          "jsDoc": "/**\n     * Exclude ips links\n     * @attr exclude-ips\n     */",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "exclude-files",
-          "description": "Exclude file links.",
-          "jsDoc": "/**\n     * Exclude file links.\n     * @attr exclude-files\n     */",
           "type": "boolean | undefined"
         },
         {
           "name": "raw-content",
-          "description": "String to hyperlink.  Gets set from innerText initially.",
-          "jsDoc": "/**\n     * String to hyperlink.  Gets set from innerText initially.\n     * @attr raw-content\n     */",
-          "type": "any"
+          "description": "One way to set the raw text for the component.\nThe other is via the innerText of the hypo-link element.",
+          "type": "string",
+          "default": "\"\""
         },
         {
-          "name": "truncate",
-          "description": "Trucate the link text to this number of characters.",
-          "jsDoc": "/**\n     * Trucate the link text to this number of characters.\n     * @attr\n     * @type {number}\n     */",
-          "type": "any"
+          "name": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
         }
       ],
       "properties": [
         {
-          "name": "disabled",
-          "attribute": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "jsDoc": "/**\r\n         * Any component that emits events should not do so if it is disabled.\r\n         * Note that this is not enforced, but the disabled property is made available.\r\n         * Users of this mix-in should ensure not to call \"de\" if this property is set to true.\r\n         * @attr\r\n         */",
-          "type": "boolean"
-        },
-        {
-          "name": "evCount",
-          "description": "Tracks how many times each event type was called.",
-          "jsDoc": "/**\r\n         * Tracks how many times each event type was called.\r\n         */",
-          "type": "{ [key: string]: number; }"
+          "name": "is",
+          "type": "string",
+          "default": "\"hypo-link\""
         },
         {
           "name": "excludeEmails",
-          "attribute": "'exclude-emails'",
+          "attribute": "exclude-emails",
           "description": "Exclude email links.",
-          "jsDoc": "/**\n     * Exclude email links.\n     * @attr 'exclude-emails'\n     */",
           "type": "boolean | undefined"
         },
         {
           "name": "excludeUrls",
           "attribute": "exclude-urls",
           "description": "Exclude url links.",
-          "jsDoc": "/**\n     * Exclude url links.\n     * @attr exclude-urls\n     */",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "excludeIps",
-          "attribute": "exclude-ips",
-          "description": "Exclude ips links",
-          "jsDoc": "/**\n     * Exclude ips links\n     * @attr exclude-ips\n     */",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "excludeFiles",
-          "attribute": "exclude-files",
-          "description": "Exclude file links.",
-          "jsDoc": "/**\n     * Exclude file links.\n     * @attr exclude-files\n     */",
           "type": "boolean | undefined"
         },
         {
           "name": "rawContent",
           "attribute": "raw-content",
-          "description": "String to hyperlink.  Gets set from innerText initially.",
-          "jsDoc": "/**\n     * String to hyperlink.  Gets set from innerText initially.\n     * @attr raw-content\n     */",
-          "type": "any"
+          "description": "One way to set the raw text for the component.\nThe other is via the innerText of the hypo-link element.",
+          "type": "string",
+          "default": "\"\""
         },
         {
-          "name": "truncate",
-          "attribute": "truncate",
-          "description": "Trucate the link text to this number of characters.",
-          "jsDoc": "/**\n     * Trucate the link text to this number of characters.\n     * @attr\n     * @type {number}\n     */",
-          "type": "any"
-        },
-        {
-          "name": "linkAttributes",
-          "description": "Link Attributes",
-          "jsDoc": "/**\n     * Link Attributes\n     */",
-          "type": "any"
-        },
-        {
-          "name": "exclude",
-          "type": "any"
-        },
-        {
-          "name": "defaultProtocol",
-          "type": "any"
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
+          "type": "boolean"
         }
       ]
     }

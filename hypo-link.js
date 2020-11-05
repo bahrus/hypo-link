@@ -38,40 +38,40 @@ const rx_email = new RegExp(sValidEmail);
 export function isEmail(s) {
     return rx_email.test(s);
 }
-export function parseText(s) {
+export function parseText(s, excludeEmails, excludeUrls) {
     const split = s.split(' ');
     split.forEach((token, idx) => {
-        if (isUrl(token)) {
+        if (!excludeUrls && isUrl(token)) {
             split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
         }
-        else if (isEmail(token)) {
+        else if (!excludeEmails && isEmail(token)) {
             split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
         }
     });
     return split.join(' ');
 }
-const mainTemplate = createTemplate(/* html */ `
+export const mainTemplate = createTemplate(/* html */ `
 <slot style="display:none"></slot>
 <div part=linkedText></div>
 `);
 const linkedText = Symbol('linkedText');
-const initTransform = ({ self }) => ({
+export const initTransform = ({ self }) => ({
     slot: [{}, { slotchange: self.handleSlotChange }],
     div: linkedText,
 });
-const updateTransforms = [
+export const updateTransforms = [
     ({ processedContent }) => ({
         [linkedText]: ({ target }) => {
             target.innerHTML = processedContent;
         }
     })
 ];
-const linkProcessedContent = ({ rawContent, self }) => {
+const linkProcessedContent = ({ rawContent, self, excludeEmails, excludeUrls }) => {
     if (rawContent === undefined)
         return;
-    self.processedContent = parseText(rawContent);
+    self.processedContent = parseText(rawContent, excludeEmails, excludeUrls);
 };
-const propActions = [linkProcessedContent];
+export const propActions = [linkProcessedContent];
 /**
  * @element hypo-link
  *
