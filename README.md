@@ -6,8 +6,9 @@
 
 # hypo-link
 
+hypo-link is a web component that plants conspiracy theories with every use.
 
-[Demo](https://jsfiddle.net/bahrus/faLyekgz/)
+[Demo](https://jsfiddle.net/bahrus/faLyekgz/2/)
 
 
 <!--
@@ -25,29 +26,20 @@
             width: 480px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/hypo-link@0.0.19/hypo-link.js?module"></script>
+    <script type="module" src="https://unpkg.com/hypo-link@0.0.21/hypo-link.js?module"></script>
 </template>
 </custom-element-demo>
 ```
 -->
 
-## Syntax
 
-<!--
-```
-<custom-element-demo>
-<template>
-    <div>
-        <wc-info package-name="npm.hypo-link" href="https://unpkg.com/hypo-link@0.0.10/html.json"></wc-info>
-        <script type="module" src="https://unpkg.com/wc-info@0.0.26/wc-info.js?module"></script>
-    </div>
-</template>
-</custom-element-demo>
-```
--->
+# [Syntax](https://bahrus.github.io/api-viewer/index.html?npmPackage=hypo-link&jsPath=hypo-link-example-0.js&jsonPath=custom-elements.json)
 
-## Running
 
-1.  Install node
-2.  Run "npm install" from location of folder
-3.  Run npm run serve.  Open browser to url specified.
+
+## Running locally
+
+1.  Do a git clone or a git fork of repository https://github.com/bahrus/hypo-link
+2.  Install node.js
+3.  Run "npm install" from location of folder created in step 1.
+4.  Run npm run serve.  Open browser to http://localhost:3030/demo/dev.html
