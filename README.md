@@ -6,9 +6,9 @@
 
 # hypo-link
 
-hypo-link is a web component that plants conspiracy theories with every use.
+hypo-link is a web component that spawns conspiracy theories with every use.
 
-[Demo](https://jsfiddle.net/bahrus/faLyekgz/2/)
+## [Demo](https://jsfiddle.net/bahrus/faLyekgz/2/)
 
 
 <!--
@@ -33,7 +33,7 @@ hypo-link is a web component that plants conspiracy theories with every use.
 -->
 
 
-# [Syntax](https://bahrus.github.io/api-viewer/index.html?npmPackage=hypo-link&jsPath=hypo-link-example-0.js&jsonPath=custom-elements.json)
+## [Syntax](https://bahrus.github.io/api-viewer/index.html?npmPackage=hypo-link&jsPath=hypo-link-example-0.js&jsonPath=custom-elements.json)
 
 
 
