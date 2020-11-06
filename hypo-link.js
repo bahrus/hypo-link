@@ -1,5 +1,7 @@
 import { XtalElement, define } from 'xtal-element/XtalElement.js';
 import { createTemplate } from 'trans-render/createTemplate.js';
+//import {unsafeHTMLSym, plugin} from 'trans-render/plugins/unsafeHTML';
+let futureUnsafeHTMLSym;
 //const raw_content = 'raw-content';
 //https://stackoverflow.com/a/42659038/3320028
 // taken from https://gist.github.com/dperini/729294
@@ -59,11 +61,16 @@ export const initTransform = ({ self }) => ({
     slot: [{}, { slotchange: self.handleSlotChange }],
     div: linkedText,
 });
+// export const updateTransforms = [
+//     ({processedContent}: HypoLink) => ({
+//         [linkedText]: ({target}: RenderContext<HTMLDivElement) => {
+//             target!.innerHTML = processedContent!;
+//         }
+//     })
+// ] as SelectiveUpdate<any>[];
 export const updateTransforms = [
     ({ processedContent }) => ({
-        [linkedText]: ({ target }) => {
-            target.innerHTML = processedContent;
-        }
+        [linkedText]: [futureUnsafeHTMLSym, processedContent]
     })
 ];
 const linkProcessedContent = ({ rawContent, self, excludeEmails, excludeUrls }) => {
@@ -85,6 +92,15 @@ export class HypoLink extends XtalElement {
         this.initTransform = initTransform;
         this.updateTransforms = updateTransforms;
         this.propActions = propActions;
+    }
+    async plugins() {
+        const { unsafeHTMLSym, plugin } = await import('trans-render/plugins/unsafeHTML.js');
+        futureUnsafeHTMLSym = unsafeHTMLSym;
+        const standardPlugins = await super.plugins();
+        Object.assign(standardPlugins, {
+            [unsafeHTMLSym]: plugin
+        });
+        return standardPlugins;
     }
     handleSlotChange(e) {
         const slot = e.target;
