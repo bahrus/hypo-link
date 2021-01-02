@@ -1,8 +1,14 @@
-import {XtalElement, define, AttributeProps, TransformValueOptions, SelectiveUpdate, RenderContext, Plugins} from 'xtal-element/XtalElement.js';
-import {createTemplate} from 'trans-render/createTemplate.js';
-//import {unsafeHTMLSym, plugin} from 'trans-render/plugins/unsafeHTML';
-let futureUnsafeHTMLSym: Symbol;
-//const raw_content = 'raw-content';
+import {define} from 'xtal-element/lib/define.js';
+import {XtalPattern, xp} from 'xtal-element/lib/XtalPattern.js';
+import {html} from 'xtal-element/lib/html.js';
+import {Reactor} from 'xtal-element/lib/Reactor.js';
+import {getPropDefs} from 'xtal-element/lib/getPropDefs.js';
+import {hydrate} from 'xtal-element/lib/hydrate.js';
+import {letThereBeProps} from 'xtal-element/lib/letThereBeProps.js';
+import {doDOMKeyPEAction} from 'xtal-element/lib/doDOMKeyPEAction.js';
+import {destructPropInfo, PropAction, PropDef} from 'xtal-element/types.d.js';
+import {HypoLinkProps} from './types.js';
+
 //https://stackoverflow.com/a/42659038/3320028
 
 // taken from https://gist.github.com/dperini/729294
@@ -53,66 +59,64 @@ export function parseText(s: string, excludeEmails: boolean | undefined, exclude
     });
     return split.join(' ');
 }
-
-export const mainTemplate = createTemplate(/* html */`
+export const mainTemplate = html`
 <slot style="display:none"></slot>
-<div part=linkedText></div>
-`);
-
-const linkedText = Symbol('linkedText');
-export const initTransform = ({self}: HypoLink) => ({
-    slot:[{},{slotchange: self.handleSlotChange}],
-    div: linkedText,
-} as TransformValueOptions);
-
-// export const updateTransforms = [
-//     ({processedContent}: HypoLink) => ({
-//         [linkedText]: ({target}: RenderContext<HTMLDivElement) => {
-//             target!.innerHTML = processedContent!;
-//         }
-//     })
-// ] as SelectiveUpdate<any>[];
-
-export const updateTransforms = [
-    ({processedContent}: HypoLink) => ({
-        [linkedText]: [futureUnsafeHTMLSym, processedContent]
-    })
-] as SelectiveUpdate<any>[];
-
+<div part=linked-text></div>
+`;
+const refs = {linkedTextPart: '', slotElement: ''};
 const linkProcessedContent = ({rawContent, self, excludeEmails, excludeUrls}: HypoLink) => {
     if(rawContent === undefined) return;
     self.processedContent = parseText(rawContent, excludeEmails, excludeUrls);
 }
-
-export const propActions = [linkProcessedContent];
-
-/**
- * @element hypo-link
- * 
- */
-export class HypoLink extends XtalElement{
+const propActions = [
+    xp.manageMainTemplate,
+    linkProcessedContent,
+    ({domCache, handleSlotChange}: HypoLink) => ([
+        {[refs.slotElement]: [,{slotchange:handleSlotChange}]},
+    ]),
+    ({domCache, processedContent, self}: HypoLink) => ([
+        {[refs.linkedTextPart]: [{innerHTML: processedContent}]}
+    ]),
+    xp.createShadow,
+] as PropAction[];
+const propDefGetter = [
+    xp.props,
+    ({processedContent, rawContent}: HypoLinkProps) => ({
+        type: String
+    }),
+    ({excludeEmails, excludeUrls}: HypoLinkProps) => ({
+        type: Boolean,
+        
+    })
+] as destructPropInfo[];
+const propDefs = getPropDefs(propDefGetter);
+export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
     static is = 'hypo-link';
-    static attributeProps = ({excludeEmails, excludeUrls, rawContent, processedContent}: HypoLink) => ({
-        bool:[excludeEmails, excludeUrls],
-        reflect: [ excludeEmails, excludeUrls],
-        str: [rawContent, processedContent]
-    } as AttributeProps);
-
-    mainTemplate = mainTemplate;
-    readyToInit = true;
-    readyToRender = true;
-    initTransform = initTransform;
-    updateTransforms = updateTransforms;
     propActions = propActions;
-    async plugins(): Promise<Plugins>{
-        const {unsafeHTMLSym, plugin} = await import('trans-render/plugins/unsafeHTML.js');
-        futureUnsafeHTMLSym = unsafeHTMLSym;
-        const standardPlugins = await super.plugins();
-        Object.assign(standardPlugins, {
-            [unsafeHTMLSym]: plugin
+    reactor = new Reactor(this, [
+        {
+            type:Array,
+            do: doDOMKeyPEAction
+        }
+    ]);
+    clonedTemplate: DocumentFragment | undefined;
+    domCache: any;
+    connectedCallback(){
+        hydrate<HypoLinkProps>(this, propDefs, {
+
         });
-        return standardPlugins;
     }
+    onPropChange(name: string, prop: PropDef, nv: any){
+        this.reactor.addToQueue(prop, nv);
+    }
+    self = this;
+    refs = refs;
+    mainTemplate = mainTemplate;
+    
+    processedContent: string | undefined;
+    rawContent: string | undefined;
+    excludeEmails: boolean | undefined;
+    excludeUrls: boolean | undefined;
 
     handleSlotChange(e: Event){
         const slot = e.target as HTMLSlotElement;
@@ -132,31 +136,6 @@ export class HypoLink extends XtalElement{
         });
         this.rawContent = text;
     }
-
-
-    /**
-     * Exclude email links.
-     * @attr 'exclude-emails'
-     */
-    excludeEmails: boolean | undefined;
-
-    /**
-     * Exclude url links.
-     * @attr exclude-urls
-     */
-    excludeUrls: boolean | undefined;
-
-
-    /**
-     * String to hyperlink.  Gets set from innerText initially.
-     * @attr raw-content
-     */
-    rawContent: string | undefined;
-
-
-    processedContent: string | undefined;
-
-    
 }
-
+letThereBeProps(HypoLink, propDefs, 'onPropChange');
 define(HypoLink);

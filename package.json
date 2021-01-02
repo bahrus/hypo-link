@@ -10,7 +10,7 @@
     "doc": "wca analyze hypo-link-example-0.js --outFile custom-elements.json"
   },
   "dependencies": {
-    "xtal-element": "0.0.316"
+    "xtal-element": "0.0.318"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "2.5.0",

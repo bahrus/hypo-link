@@ -1,8 +1,11 @@
-import { XtalElement, define } from 'xtal-element/XtalElement.js';
-import { createTemplate } from 'trans-render/createTemplate.js';
-//import {unsafeHTMLSym, plugin} from 'trans-render/plugins/unsafeHTML';
-let futureUnsafeHTMLSym;
-//const raw_content = 'raw-content';
+import { define } from 'xtal-element/lib/define.js';
+import { xp } from 'xtal-element/lib/XtalPattern.js';
+import { html } from 'xtal-element/lib/html.js';
+import { Reactor } from 'xtal-element/lib/Reactor.js';
+import { getPropDefs } from 'xtal-element/lib/getPropDefs.js';
+import { hydrate } from 'xtal-element/lib/hydrate.js';
+import { letThereBeProps } from 'xtal-element/lib/letThereBeProps.js';
+import { doDOMKeyPEAction } from 'xtal-element/lib/doDOMKeyPEAction.js';
 //https://stackoverflow.com/a/42659038/3320028
 // taken from https://gist.github.com/dperini/729294
 const rx_url = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
@@ -52,55 +55,56 @@ export function parseText(s, excludeEmails, excludeUrls) {
     });
     return split.join(' ');
 }
-export const mainTemplate = createTemplate(/* html */ `
+export const mainTemplate = html `
 <slot style="display:none"></slot>
-<div part=linkedText></div>
-`);
-const linkedText = Symbol('linkedText');
-export const initTransform = ({ self }) => ({
-    slot: [{}, { slotchange: self.handleSlotChange }],
-    div: linkedText,
-});
-// export const updateTransforms = [
-//     ({processedContent}: HypoLink) => ({
-//         [linkedText]: ({target}: RenderContext<HTMLDivElement) => {
-//             target!.innerHTML = processedContent!;
-//         }
-//     })
-// ] as SelectiveUpdate<any>[];
-export const updateTransforms = [
-    ({ processedContent }) => ({
-        [linkedText]: [futureUnsafeHTMLSym, processedContent]
-    })
-];
+<div part=linked-text></div>
+`;
+const refs = { linkedTextPart: '', slotElement: '' };
 const linkProcessedContent = ({ rawContent, self, excludeEmails, excludeUrls }) => {
     if (rawContent === undefined)
         return;
     self.processedContent = parseText(rawContent, excludeEmails, excludeUrls);
 };
-export const propActions = [linkProcessedContent];
-/**
- * @element hypo-link
- *
- */
-export class HypoLink extends XtalElement {
+const propActions = [
+    xp.manageMainTemplate,
+    linkProcessedContent,
+    ({ domCache, handleSlotChange }) => ([
+        { [refs.slotElement]: [, { slotchange: handleSlotChange }] },
+    ]),
+    ({ domCache, processedContent, self }) => ([
+        { [refs.linkedTextPart]: [{ innerHTML: processedContent }] }
+    ]),
+    xp.createShadow,
+];
+const propDefGetter = [
+    xp.props,
+    ({ processedContent, rawContent }) => ({
+        type: String
+    }),
+    ({ excludeEmails, excludeUrls }) => ({
+        type: Boolean,
+    })
+];
+const propDefs = getPropDefs(propDefGetter);
+export class HypoLink extends HTMLElement {
     constructor() {
         super(...arguments);
-        this.mainTemplate = mainTemplate;
-        this.readyToInit = true;
-        this.readyToRender = true;
-        this.initTransform = initTransform;
-        this.updateTransforms = updateTransforms;
         this.propActions = propActions;
+        this.reactor = new Reactor(this, [
+            {
+                type: Array,
+                do: doDOMKeyPEAction
+            }
+        ]);
+        this.self = this;
+        this.refs = refs;
+        this.mainTemplate = mainTemplate;
     }
-    async plugins() {
-        const { unsafeHTMLSym, plugin } = await import('trans-render/plugins/unsafeHTML.js');
-        futureUnsafeHTMLSym = unsafeHTMLSym;
-        const standardPlugins = await super.plugins();
-        Object.assign(standardPlugins, {
-            [unsafeHTMLSym]: plugin
-        });
-        return standardPlugins;
+    connectedCallback() {
+        hydrate(this, propDefs, {});
+    }
+    onPropChange(name, prop, nv) {
+        this.reactor.addToQueue(prop, nv);
     }
     handleSlotChange(e) {
         const slot = e.target;
@@ -122,9 +126,5 @@ export class HypoLink extends XtalElement {
     }
 }
 HypoLink.is = 'hypo-link';
-HypoLink.attributeProps = ({ excludeEmails, excludeUrls, rawContent, processedContent }) => ({
-    bool: [excludeEmails, excludeUrls],
-    reflect: [excludeEmails, excludeUrls],
-    str: [rawContent, processedContent]
-});
+letThereBeProps(HypoLink, propDefs, 'onPropChange');
 define(HypoLink);
