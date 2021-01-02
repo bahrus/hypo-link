@@ -10,13 +10,12 @@
     "doc": "wca analyze hypo-link-example-0.js --outFile custom-elements.json"
   },
   "dependencies": {
-    "xtal-element": "0.0.314",
-    "trans-render": "0.0.269"
+    "xtal-element": "0.0.316"
   },
   "devDependencies": {
-    "@webcomponents/webcomponentsjs": "2.4.4",
-    "xtal-test": "0.0.48",
-    "es-module-shims": "0.7.1"
+    "@webcomponents/webcomponentsjs": "2.5.0",
+    "es-module-shims": "0.8.0",
+    "xtal-test": "0.0.48"
   },
   "repository": {
     "type": "git",
