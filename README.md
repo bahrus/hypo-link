@@ -26,7 +26,7 @@ hypo-link is a web component that spawns conspiracy theories with every use.
             width: 480px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/hypo-link@0.0.21/hypo-link.js?module"></script>
+    <script type="module" src="https://unpkg.com/hypo-link@0.0.23/hypo-link.js?module"></script>
 </template>
 </custom-element-demo>
 ```
