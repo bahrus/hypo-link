@@ -5,7 +5,7 @@ import { Reactor } from 'xtal-element/lib/Reactor.js';
 import { getPropDefs } from 'xtal-element/lib/getPropDefs.js';
 import { hydrate } from 'xtal-element/lib/hydrate.js';
 import { letThereBeProps } from 'xtal-element/lib/letThereBeProps.js';
-import { doDOMKeyPEAction } from 'xtal-element/lib/doDOMKeyPEAction.js';
+import { DOMKeyPE } from 'xtal-element/lib/DOMKeyPE.js';
 //https://stackoverflow.com/a/42659038/3320028
 // taken from https://gist.github.com/dperini/729294
 const rx_url = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
@@ -93,7 +93,7 @@ export class HypoLink extends HTMLElement {
         this.reactor = new Reactor(this, [
             {
                 type: Array,
-                do: doDOMKeyPEAction
+                ctor: DOMKeyPE
             }
         ]);
         this.self = this;

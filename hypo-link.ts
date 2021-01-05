@@ -5,7 +5,7 @@ import {Reactor} from 'xtal-element/lib/Reactor.js';
 import {getPropDefs} from 'xtal-element/lib/getPropDefs.js';
 import {hydrate} from 'xtal-element/lib/hydrate.js';
 import {letThereBeProps} from 'xtal-element/lib/letThereBeProps.js';
-import {doDOMKeyPEAction} from 'xtal-element/lib/doDOMKeyPEAction.js';
+import {DOMKeyPE} from 'xtal-element/lib/DOMKeyPE.js';
 import {destructPropInfo, PropAction, PropDef} from 'xtal-element/types.d.js';
 import {HypoLinkProps} from './types.js';
 
@@ -96,7 +96,7 @@ export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
     reactor = new Reactor(this, [
         {
             type:Array,
-            do: doDOMKeyPEAction
+            ctor: DOMKeyPE
         }
     ]);
     clonedTemplate: DocumentFragment | undefined;
