@@ -1,10 +1,6 @@
-import { define } from 'xtal-element/lib/define.js';
+import { xc } from 'xtal-element/lib/XtalCore.js';
 import { xp } from 'xtal-element/lib/XtalPattern.js';
 import { html } from 'xtal-element/lib/html.js';
-import { Reactor } from 'xtal-element/lib/Reactor.js';
-import { getPropDefs } from 'xtal-element/lib/getPropDefs.js';
-import { hydrate } from 'xtal-element/lib/hydrate.js';
-import { letThereBeProps } from 'xtal-element/lib/letThereBeProps.js';
 import { DOMKeyPE } from 'xtal-element/lib/DOMKeyPE.js';
 //https://stackoverflow.com/a/42659038/3320028
 // taken from https://gist.github.com/dperini/729294
@@ -76,21 +72,23 @@ const propActions = [
     ]),
     xp.createShadow,
 ];
-const propDefGetter = [
-    xp.props,
-    ({ processedContent, rawContent }) => ({
-        type: String
-    }),
-    ({ excludeEmails, excludeUrls }) => ({
-        type: Boolean,
-    })
-];
-const propDefs = getPropDefs(propDefGetter);
+const str = {
+    type: String
+};
+const bool = {
+    type: Boolean
+};
+const propDefMap = {
+    ...xp.props,
+    processedContent: str, rawContent: str,
+    excludeEmails: bool, excludeUrls: bool
+};
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 export class HypoLink extends HTMLElement {
     constructor() {
         super(...arguments);
         this.propActions = propActions;
-        this.reactor = new Reactor(this, [
+        this.reactor = new xc.Reactor(this, [
             {
                 type: Array,
                 ctor: DOMKeyPE
@@ -101,7 +99,7 @@ export class HypoLink extends HTMLElement {
         this.mainTemplate = mainTemplate;
     }
     connectedCallback() {
-        hydrate(this, propDefs, {});
+        xc.hydrate(this, slicedPropDefs, {});
     }
     onPropChange(name, prop, nv) {
         this.reactor.addToQueue(prop, nv);
@@ -126,5 +124,5 @@ export class HypoLink extends HTMLElement {
     }
 }
 HypoLink.is = 'hypo-link';
-letThereBeProps(HypoLink, propDefs, 'onPropChange');
-define(HypoLink);
+xc.letThereBeProps(HypoLink, slicedPropDefs.propDefs, 'onPropChange');
+xc.define(HypoLink);

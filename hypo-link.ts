@@ -1,12 +1,8 @@
-import {define} from 'xtal-element/lib/define.js';
+import {xc} from 'xtal-element/lib/XtalCore.js';
 import {XtalPattern, xp} from 'xtal-element/lib/XtalPattern.js';
 import {html} from 'xtal-element/lib/html.js';
-import {Reactor} from 'xtal-element/lib/Reactor.js';
-import {getPropDefs} from 'xtal-element/lib/getPropDefs.js';
-import {hydrate} from 'xtal-element/lib/hydrate.js';
-import {letThereBeProps} from 'xtal-element/lib/letThereBeProps.js';
 import {DOMKeyPE} from 'xtal-element/lib/DOMKeyPE.js';
-import {destructPropInfo, PropAction, PropDef} from 'xtal-element/types.d.js';
+import {destructPropInfo, PropAction, PropDef, PropDefMap} from 'xtal-element/types.d.js';
 import {HypoLinkProps} from './types.js';
 
 //https://stackoverflow.com/a/42659038/3320028
@@ -79,21 +75,23 @@ const propActions = [
     ]),
     xp.createShadow,
 ] as PropAction[];
-const propDefGetter = [
-    xp.props,
-    ({processedContent, rawContent}: HypoLinkProps) => ({
-        type: String
-    }),
-    ({excludeEmails, excludeUrls}: HypoLinkProps) => ({
-        type: Boolean,
-        
-    })
-] as destructPropInfo[];
-const propDefs = getPropDefs(propDefGetter);
+const str: PropDef = {
+    type: String
+};
+const bool: PropDef = {
+    type: Boolean
+};
+const propDefMap: PropDefMap<HypoLink> = {
+    ...xp.props,
+    processedContent: str, rawContent: str,
+    excludeEmails: bool, excludeUrls: bool
+};
+
+const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
     static is = 'hypo-link';
     propActions = propActions;
-    reactor = new Reactor(this, [
+    reactor = new xc.Reactor(this, [
         {
             type:Array,
             ctor: DOMKeyPE
@@ -102,7 +100,7 @@ export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
     clonedTemplate: DocumentFragment | undefined;
     domCache: any;
     connectedCallback(){
-        hydrate<HypoLinkProps>(this, propDefs, {
+        xc.hydrate<HypoLinkProps>(this, slicedPropDefs, {
 
         });
     }
@@ -137,5 +135,5 @@ export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
         this.rawContent = text;
     }
 }
-letThereBeProps(HypoLink, propDefs, 'onPropChange');
-define(HypoLink);
+xc.letThereBeProps(HypoLink, slicedPropDefs.propDefs, 'onPropChange');
+xc.define(HypoLink);
