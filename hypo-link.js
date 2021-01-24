@@ -66,11 +66,12 @@ const propActions = [
     linkProcessedContent,
     ({ domCache, handleSlotChange }) => ([
         { [refs.slotElement]: [, { slotchange: handleSlotChange }] },
+        [{ handlersAttached: true }]
     ]),
     ({ domCache, processedContent, self }) => ([
         { [refs.linkedTextPart]: [{ innerHTML: processedContent }] }
     ]),
-    xp.createShadow,
+    xp.attachShadow,
 ];
 const str = {
     type: String
@@ -80,7 +81,10 @@ const bool = {
 };
 const propDefMap = {
     ...xp.props,
-    processedContent: str, rawContent: str,
+    processedContent: {
+        type: String,
+        stopReactionsIfFalsy: true,
+    }, rawContent: str,
     excludeEmails: bool, excludeUrls: bool
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);

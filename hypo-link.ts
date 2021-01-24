@@ -2,7 +2,7 @@ import {xc} from 'xtal-element/lib/XtalCore.js';
 import {XtalPattern, xp} from 'xtal-element/lib/XtalPattern.js';
 import {html} from 'xtal-element/lib/html.js';
 import {DOMKeyPE} from 'xtal-element/lib/DOMKeyPE.js';
-import {destructPropInfo, PropAction, PropDef, PropDefMap} from 'xtal-element/types.d.js';
+import {PropAction, PropDef, PropDefMap} from 'xtal-element/types.d.js';
 import {HypoLinkProps} from './types.js';
 
 //https://stackoverflow.com/a/42659038/3320028
@@ -69,11 +69,12 @@ const propActions = [
     linkProcessedContent,
     ({domCache, handleSlotChange}: HypoLink) => ([
         {[refs.slotElement]: [,{slotchange:handleSlotChange}]},
+        [{handlersAttached: true}]
     ]),
     ({domCache, processedContent, self}: HypoLink) => ([
         {[refs.linkedTextPart]: [{innerHTML: processedContent}]}
     ]),
-    xp.createShadow,
+    xp.attachShadow,
 ] as PropAction[];
 const str: PropDef = {
     type: String
@@ -83,7 +84,10 @@ const bool: PropDef = {
 };
 const propDefMap: PropDefMap<HypoLink> = {
     ...xp.props,
-    processedContent: str, rawContent: str,
+    processedContent: {
+        type: String,
+        stopReactionsIfFalsy: true,
+    }, rawContent: str,
     excludeEmails: bool, excludeUrls: bool
 };
 
