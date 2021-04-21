@@ -8,7 +8,7 @@
 
 hypo-link is a web component that spawns conspiracy theories with every use.
 
-## [Demo](https://jsfiddle.net/bahrus/faLyekgz/2/)
+## [Demo](https://codepen.io/bahrus/pen/abpQzjm)
 
 
 <!--
@@ -26,7 +26,9 @@ hypo-link is a web component that spawns conspiracy theories with every use.
             width: 480px;
         }
     </style>
-    <script type="module" src="https://unpkg.com/hypo-link@0.0.23/hypo-link.js?module"></script>
+    <script type=module crossorigin>
+        import 'https://cdn.skypack.dev/hypo-link@0.0.28?min';
+    </script>
 </template>
 </custom-element-demo>
 ```
