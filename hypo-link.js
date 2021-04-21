@@ -92,9 +92,9 @@ export class HypoLink extends HTMLElement {
     constructor() {
         super(...arguments);
         this.propActions = propActions;
-        this.reactor = new xc.Reactor(this, [
+        this.reactor = new xp.RxSuppl(this, [
             {
-                type: Array,
+                rhsType: Array,
                 ctor: DOMKeyPE
             }
         ]);
@@ -128,5 +128,5 @@ export class HypoLink extends HTMLElement {
     }
 }
 HypoLink.is = 'hypo-link';
-xc.letThereBeProps(HypoLink, slicedPropDefs.propDefs, 'onPropChange');
+xc.letThereBeProps(HypoLink, slicedPropDefs, 'onPropChange');
 xc.define(HypoLink);

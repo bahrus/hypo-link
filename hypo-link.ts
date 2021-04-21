@@ -95,9 +95,9 @@ const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
 export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
     static is = 'hypo-link';
     propActions = propActions;
-    reactor = new xc.Reactor(this, [
+    reactor = new xp.RxSuppl(this, [
         {
-            type:Array,
+            rhsType:Array,
             ctor: DOMKeyPE
         }
     ]);
@@ -139,5 +139,5 @@ export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
         this.rawContent = text;
     }
 }
-xc.letThereBeProps(HypoLink, slicedPropDefs.propDefs, 'onPropChange');
+xc.letThereBeProps(HypoLink, slicedPropDefs, 'onPropChange');
 xc.define(HypoLink);
