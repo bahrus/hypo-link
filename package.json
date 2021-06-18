@@ -8,14 +8,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node node_modules/xtal-test/serve.js",
     "package-check": "package-check",
-    "doc": "wca analyze hypo-link-example-0.js --outFile custom-elements.json"
+    "doc": "custom-elements-manifest analyze"
   },
   "dependencies": {
-    "xtal-element": "0.0.383"
+    "xtal-element": "0.0.400"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "xtal-test": "0.0.50"
+    "xtal-test": "0.0.51",
+    "@custom-elements-manifest/analyzer": "0.2.1"
   },
   "exports": {
     ".": "./hypo-link.js",
@@ -42,5 +43,6 @@
   "bugs": {
     "url": "https://github.com/bahrus/hypo-link/issues"
   },
-  "homepage": "https://github.com/bahrus/hypo-link#readme"
+  "homepage": "https://github.com/bahrus/hypo-link#readme",
+  "customElements": "custom-elements.json"
 }

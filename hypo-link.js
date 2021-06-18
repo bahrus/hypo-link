@@ -2,6 +2,53 @@ import { xc } from 'xtal-element/lib/XtalCore.js';
 import { xp } from 'xtal-element/lib/XtalPattern.js';
 import { html } from 'xtal-element/lib/html.js';
 import { DOMKeyPE } from 'xtal-element/lib/DOMKeyPE.js';
+export const mainTemplate = html `
+<slot style="display:none"></slot>
+<div part=linked-text></div>
+`;
+export class HypoLink extends HTMLElement {
+    static is = 'hypo-link';
+    propActions = propActions;
+    reactor = new xp.RxSuppl(this, [
+        {
+            rhsType: Array,
+            ctor: DOMKeyPE
+        }
+    ]);
+    clonedTemplate;
+    domCache;
+    connectedCallback() {
+        xc.mergeProps(this, slicedPropDefs, {});
+    }
+    onPropChange(name, prop, nv) {
+        this.reactor.addToQueue(prop, nv);
+    }
+    self = this;
+    refs = refs;
+    mainTemplate = mainTemplate;
+    processedContent;
+    rawContent;
+    excludeEmails;
+    excludeUrls;
+    handleSlotChange(e) {
+        const slot = e.target;
+        const nodes = slot.assignedNodes();
+        let text = '';
+        nodes.forEach(node => {
+            //const aNode = node as any;
+            switch (node.nodeType) {
+                case 1:
+                    const eNode = node;
+                    text += eNode.innerText;
+                    break;
+                case 3:
+                    text += node.nodeValue;
+                    break;
+            }
+        });
+        this.rawContent = text;
+    }
+}
 //https://stackoverflow.com/a/42659038/3320028
 // taken from https://gist.github.com/dperini/729294
 const rx_url = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
@@ -51,10 +98,6 @@ export function parseText(s, excludeEmails, excludeUrls) {
     });
     return split.join(' ');
 }
-export const mainTemplate = html `
-<slot style="display:none"></slot>
-<div part=linked-text></div>
-`;
 const refs = { linkedTextPart: '', slotElement: '' };
 const linkProcessedContent = ({ rawContent, self, excludeEmails, excludeUrls }) => {
     if (rawContent === undefined)
@@ -88,45 +131,5 @@ const propDefMap = {
     excludeEmails: bool, excludeUrls: bool
 };
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-export class HypoLink extends HTMLElement {
-    constructor() {
-        super(...arguments);
-        this.propActions = propActions;
-        this.reactor = new xp.RxSuppl(this, [
-            {
-                rhsType: Array,
-                ctor: DOMKeyPE
-            }
-        ]);
-        this.self = this;
-        this.refs = refs;
-        this.mainTemplate = mainTemplate;
-    }
-    connectedCallback() {
-        xc.hydrate(this, slicedPropDefs, {});
-    }
-    onPropChange(name, prop, nv) {
-        this.reactor.addToQueue(prop, nv);
-    }
-    handleSlotChange(e) {
-        const slot = e.target;
-        const nodes = slot.assignedNodes();
-        let text = '';
-        nodes.forEach(node => {
-            //const aNode = node as any;
-            switch (node.nodeType) {
-                case 1:
-                    const eNode = node;
-                    text += eNode.innerText;
-                    break;
-                case 3:
-                    text += node.nodeValue;
-                    break;
-            }
-        });
-        this.rawContent = text;
-    }
-}
-HypoLink.is = 'hypo-link';
 xc.letThereBeProps(HypoLink, slicedPropDefs, 'onPropChange');
 xc.define(HypoLink);

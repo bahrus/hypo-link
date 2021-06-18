@@ -1,64 +1,798 @@
 {
-  "version": "experimental",
-  "tags": [
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
     {
-      "name": "hypo-link",
-      "path": "./hypo-link-example-0.js",
-      "attributes": [
+      "kind": "javascript-module",
+      "path": "hypo-link-example-0.js",
+      "declarations": [
         {
-          "name": "exclude-emails",
-          "description": "Exclude email links.",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "exclude-urls",
-          "description": "Exclude url links.",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "raw-content",
-          "description": "One way to set the raw text for the component.\nThe other is via the innerText of the hypo-link element.",
-          "type": "string",
-          "default": "\"\""
-        },
-        {
-          "name": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "type": "boolean"
+          "kind": "class",
+          "description": "",
+          "name": "HypoLinkExample0",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "privacy": "private",
+              "default": "hypo-link-example-0"
+            },
+            {
+              "kind": "field",
+              "name": "rawContent",
+              "description": "One way to set the raw text for the component.\nThe other is via the innerText of the hypo-link element."
+            },
+            {
+              "kind": "field",
+              "name": "processedContent",
+              "privacy": "private",
+              "default": ""
+            },
+            {
+              "kind": "field",
+              "name": "mainTemplate",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "initTransform",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "updateTransforms",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "readyToInit",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "readyToRender",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "attributeProps",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "clonedTemplate",
+              "type": {
+                "text": "DocumentFragment | undefined"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "domCache",
+              "type": {
+                "text": "any"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "prop",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "nv",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "refs",
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "excludeEmails",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "excludeUrls",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HypoLink"
+          },
+          "tagName": "hypo-link",
+          "customElement": true
         }
       ],
-      "properties": [
+      "exports": [
         {
-          "name": "is",
-          "type": "string",
-          "default": "\"hypo-link\""
-        },
-        {
-          "name": "excludeEmails",
-          "attribute": "exclude-emails",
-          "description": "Exclude email links.",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "excludeUrls",
-          "attribute": "exclude-urls",
-          "description": "Exclude url links.",
-          "type": "boolean | undefined"
-        },
-        {
-          "name": "rawContent",
-          "attribute": "raw-content",
-          "description": "One way to set the raw text for the component.\nThe other is via the innerText of the hypo-link element.",
-          "type": "string",
-          "default": "\"\""
-        },
-        {
-          "name": "disabled",
-          "attribute": "disabled",
-          "description": "Any component that emits events should not do so if it is disabled.\r\nNote that this is not enforced, but the disabled property is made available.\r\nUsers of this mix-in should ensure not to call \"de\" if this property is set to true.",
-          "type": "boolean"
+          "kind": "js",
+          "name": "HypoLinkExample0",
+          "declaration": {
+            "name": "HypoLinkExample0",
+            "module": "hypo-link-example-0.js"
+          }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "hypo-link-example-0.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HypoLinkExample0",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "privacy": "private",
+              "default": "hypo-link-example-0"
+            },
+            {
+              "kind": "field",
+              "name": "rawContent",
+              "description": "One way to set the raw text for the component.\r\nThe other is via the innerText of the hypo-link element."
+            },
+            {
+              "kind": "field",
+              "name": "processedContent",
+              "privacy": "private",
+              "default": ""
+            },
+            {
+              "kind": "field",
+              "name": "mainTemplate",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "initTransform",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "updateTransforms",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "propActions",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "readyToInit",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "readyToRender",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "attributeProps",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "clonedTemplate",
+              "type": {
+                "text": "DocumentFragment | undefined"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "domCache",
+              "type": {
+                "text": "any"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "prop",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "nv",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "self",
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "refs",
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "excludeEmails",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "excludeUrls",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ],
+              "inheritedFrom": {
+                "name": "HypoLink",
+                "module": "hypo-link.ts"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HypoLink"
+          },
+          "tagName": "hypo-link",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HypoLinkExample0",
+          "declaration": {
+            "name": "HypoLinkExample0",
+            "module": "hypo-link-example-0.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "hypo-link.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "mainTemplate"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HypoLink",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "default": "hypo-link"
+            },
+            {
+              "kind": "field",
+              "name": "propActions"
+            },
+            {
+              "kind": "field",
+              "name": "reactor"
+            },
+            {
+              "kind": "field",
+              "name": "clonedTemplate"
+            },
+            {
+              "kind": "field",
+              "name": "domCache"
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "prop"
+                },
+                {
+                  "name": "nv"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "self"
+            },
+            {
+              "kind": "field",
+              "name": "refs"
+            },
+            {
+              "kind": "field",
+              "name": "mainTemplate"
+            },
+            {
+              "kind": "field",
+              "name": "processedContent"
+            },
+            {
+              "kind": "field",
+              "name": "rawContent"
+            },
+            {
+              "kind": "field",
+              "name": "excludeEmails"
+            },
+            {
+              "kind": "field",
+              "name": "excludeUrls"
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
+        },
+        {
+          "kind": "function",
+          "name": "isUrl",
+          "parameters": [
+            {
+              "name": "s"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "isEmail",
+          "parameters": [
+            {
+              "name": "s"
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "parseText",
+          "parameters": [
+            {
+              "name": "s"
+            },
+            {
+              "name": "excludeEmails"
+            },
+            {
+              "name": "excludeUrls"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "mainTemplate",
+          "declaration": {
+            "name": "mainTemplate",
+            "module": "hypo-link.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HypoLink",
+          "declaration": {
+            "name": "HypoLink",
+            "module": "hypo-link.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isUrl",
+          "declaration": {
+            "name": "isUrl",
+            "module": "hypo-link.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isEmail",
+          "declaration": {
+            "name": "isEmail",
+            "module": "hypo-link.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseText",
+          "declaration": {
+            "name": "parseText",
+            "module": "hypo-link.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "hypo-link.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "mainTemplate"
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HypoLink",
+          "members": [
+            {
+              "kind": "field",
+              "name": "is",
+              "static": true,
+              "default": "hypo-link"
+            },
+            {
+              "kind": "field",
+              "name": "propActions"
+            },
+            {
+              "kind": "field",
+              "name": "reactor",
+              "type": {
+                "text": "IReactor"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "clonedTemplate",
+              "type": {
+                "text": "DocumentFragment | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "domCache",
+              "type": {
+                "text": "any"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "onPropChange",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "prop",
+                  "type": {
+                    "text": "PropDef"
+                  }
+                },
+                {
+                  "name": "nv",
+                  "type": {
+                    "text": "any"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "self"
+            },
+            {
+              "kind": "field",
+              "name": "refs"
+            },
+            {
+              "kind": "field",
+              "name": "mainTemplate"
+            },
+            {
+              "kind": "field",
+              "name": "processedContent",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "rawContent",
+              "type": {
+                "text": "string | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "excludeEmails",
+              "type": {
+                "text": "boolean | undefined"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "excludeUrls",
+              "type": {
+                "text": "boolean | undefined"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "handleSlotChange",
+              "parameters": [
+                {
+                  "name": "e",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "customElement": true
+        },
+        {
+          "kind": "function",
+          "name": "isUrl",
+          "parameters": [
+            {
+              "name": "s",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "isEmail",
+          "parameters": [
+            {
+              "name": "s",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "parseText",
+          "parameters": [
+            {
+              "name": "s",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "excludeEmails",
+              "type": {
+                "text": "boolean | undefined"
+              }
+            },
+            {
+              "name": "excludeUrls",
+              "type": {
+                "text": "boolean | undefined"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "mainTemplate",
+          "declaration": {
+            "name": "mainTemplate",
+            "module": "hypo-link.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HypoLink",
+          "declaration": {
+            "name": "HypoLink",
+            "module": "hypo-link.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isUrl",
+          "declaration": {
+            "name": "isUrl",
+            "module": "hypo-link.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "isEmail",
+          "declaration": {
+            "name": "isEmail",
+            "module": "hypo-link.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseText",
+          "declaration": {
+            "name": "parseText",
+            "module": "hypo-link.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "types.d.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "demo/test.js",
+      "declarations": [],
+      "exports": []
     }
   ]
 }

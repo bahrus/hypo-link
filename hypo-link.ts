@@ -1,9 +1,59 @@
-import {xc} from 'xtal-element/lib/XtalCore.js';
+import {xc, PropAction, PropDef, PropDefMap, IReactor} from 'xtal-element/lib/XtalCore.js';
 import {XtalPattern, xp} from 'xtal-element/lib/XtalPattern.js';
 import {html} from 'xtal-element/lib/html.js';
 import {DOMKeyPE} from 'xtal-element/lib/DOMKeyPE.js';
-import {PropAction, PropDef, PropDefMap} from 'xtal-element/types.d.js';
 import {HypoLinkProps} from './types.js';
+
+export const mainTemplate = html`
+<slot style="display:none"></slot>
+<div part=linked-text></div>
+`;
+
+export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
+    static is = 'hypo-link';
+    propActions = propActions;
+    reactor: IReactor = new xp.RxSuppl(this, [
+        {
+            rhsType:Array,
+            ctor: DOMKeyPE
+        }
+    ]);
+    clonedTemplate: DocumentFragment | undefined;
+    domCache: any;
+    connectedCallback(){
+        xc.mergeProps<HypoLinkProps>(this, slicedPropDefs, {});
+    }
+    onPropChange(name: string, prop: PropDef, nv: any){
+        this.reactor.addToQueue(prop, nv);
+    }
+    self = this;
+    refs = refs;
+    mainTemplate = mainTemplate;
+    
+    processedContent: string | undefined;
+    rawContent: string | undefined;
+    excludeEmails: boolean | undefined;
+    excludeUrls: boolean | undefined;
+
+    handleSlotChange(e: Event){
+        const slot = e.target as HTMLSlotElement;
+        const nodes = slot.assignedNodes();
+        let text = '';
+        nodes.forEach(node => {
+            //const aNode = node as any;
+            switch(node.nodeType){
+                case 1:
+                    const eNode = node as HTMLElement;
+                    text += eNode.innerText;
+                    break;
+                case 3:
+                    text += node.nodeValue;
+                    break;
+            }
+        });
+        this.rawContent = text;
+    }
+}
 
 //https://stackoverflow.com/a/42659038/3320028
 
@@ -55,10 +105,7 @@ export function parseText(s: string, excludeEmails: boolean | undefined, exclude
     });
     return split.join(' ');
 }
-export const mainTemplate = html`
-<slot style="display:none"></slot>
-<div part=linked-text></div>
-`;
+
 const refs = {linkedTextPart: '', slotElement: ''};
 const linkProcessedContent = ({rawContent, self, excludeEmails, excludeUrls}: HypoLink) => {
     if(rawContent === undefined) return;
@@ -92,52 +139,6 @@ const propDefMap: PropDefMap<HypoLink> = {
 };
 
 const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
-    static is = 'hypo-link';
-    propActions = propActions;
-    reactor = new xp.RxSuppl(this, [
-        {
-            rhsType:Array,
-            ctor: DOMKeyPE
-        }
-    ]);
-    clonedTemplate: DocumentFragment | undefined;
-    domCache: any;
-    connectedCallback(){
-        xc.hydrate<HypoLinkProps>(this, slicedPropDefs, {
 
-        });
-    }
-    onPropChange(name: string, prop: PropDef, nv: any){
-        this.reactor.addToQueue(prop, nv);
-    }
-    self = this;
-    refs = refs;
-    mainTemplate = mainTemplate;
-    
-    processedContent: string | undefined;
-    rawContent: string | undefined;
-    excludeEmails: boolean | undefined;
-    excludeUrls: boolean | undefined;
-
-    handleSlotChange(e: Event){
-        const slot = e.target as HTMLSlotElement;
-        const nodes = slot.assignedNodes();
-        let text = '';
-        nodes.forEach(node => {
-            //const aNode = node as any;
-            switch(node.nodeType){
-                case 1:
-                    const eNode = node as HTMLElement;
-                    text += eNode.innerText;
-                    break;
-                case 3:
-                    text += node.nodeValue;
-                    break;
-            }
-        });
-        this.rawContent = text;
-    }
-}
 xc.letThereBeProps(HypoLink, slicedPropDefs, 'onPropChange');
 xc.define(HypoLink);
