@@ -6,6 +6,8 @@
 
 # hypo-link
 
+[TODO]: include support for wikipedia/markdown hyperlinks.
+
 hypo-link is a web component that spawns conspiracy theories with every use.
 
 ## [Demo](https://codepen.io/bahrus/pen/abpQzjm)
