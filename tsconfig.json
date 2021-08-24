@@ -8,6 +8,9 @@
 		"newLine": "LF",
 		"watch": true
 	},
+	"file":[
+		"hypo-link2.ts"
+	],
 	"exclude":[
 		"build",
 		"bower_components",
