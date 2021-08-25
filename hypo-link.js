@@ -1,35 +1,44 @@
-import { xc } from 'xtal-element/lib/XtalCore.js';
-import { xp } from 'xtal-element/lib/XtalPattern.js';
-import { html } from 'xtal-element/lib/html.js';
-import { DOMKeyPE } from 'xtal-element/lib/DOMKeyPE.js';
-export const mainTemplate = html `
+import { CE } from 'trans-render/lib/CE.js';
+import { tm } from 'trans-render/lib/TemplMgmtWithPEST.js';
+export const mainTemplate = tm.html `
 <slot style="display:none"></slot>
 <div part=linked-text></div>
 `;
-export class HypoLink extends HTMLElement {
-    static is = 'hypo-link';
-    propActions = propActions;
-    reactor = new xp.RxSuppl(this, [
-        {
-            rhsType: Array,
-            ctor: DOMKeyPE
-        }
-    ]);
-    clonedTemplate;
-    domCache;
-    connectedCallback() {
-        xc.mergeProps(this, slicedPropDefs, {});
+export class HypoLinkCore extends HTMLElement {
+    processContent(self) {
+        const { rawContent, excludeEmails, excludeUrls, parseText } = self;
+        return {
+            processedContent: parseText(self, rawContent, excludeEmails, excludeUrls),
+        };
     }
-    onPropChange(name, prop, nv) {
-        this.reactor.addToQueue(prop, nv);
+    parseText(self, s, excludeEmails, excludeUrls) {
+        const { isUrl, isEmail } = self;
+        const split = s.split(' ');
+        split.forEach((token, idx) => {
+            if (!excludeUrls && isUrl(self, token)) {
+                split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
+            }
+            else if (!excludeEmails && isEmail(self, token)) {
+                split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
+            }
+        });
+        return split.join(' ');
     }
-    self = this;
-    refs = refs;
-    mainTemplate = mainTemplate;
-    processedContent;
-    rawContent;
-    excludeEmails;
-    excludeUrls;
+    isUrl(self, s) {
+        if (!rx_url.test(s))
+            return false;
+        const sLC = s.toLowerCase();
+        for (let i = 0, ii = prefixes.length; i < ii; i++)
+            if (sLC.startsWith(prefixes[i]))
+                return true;
+        for (let i = 0, ii = domains.length; i < ii; i++)
+            if (sLC.endsWith('.' + domains[i]) || sLC.includes('.' + domains[i] + '\/') || sLC.includes('.' + domains[i] + '?'))
+                return true;
+        return false;
+    }
+    isEmail(self, s) {
+        return rx_email.test(s);
+    }
     handleSlotChange(e) {
         const slot = e.target;
         const nodes = slot.assignedNodes();
@@ -56,18 +65,6 @@ const rx_url = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.
 const prefixes = ['http:\/\/', 'https:\/\/', 'ftp:\/\/', 'www.'];
 // taken from https://w3techs.com/technologies/overview/top_level_domain/all
 const domains = ['com', 'ru', 'net', 'org', 'de', 'jp', 'uk', 'br', 'pl', 'in', 'it', 'fr', 'au', 'info', 'nl', 'ir', 'cn', 'es', 'cz', 'kr', 'ua', 'ca', 'eu', 'biz', 'za', 'gr', 'co', 'ro', 'se', 'tw', 'mx', 'vn', 'tr', 'ch', 'hu', 'at', 'be', 'dk', 'tv', 'me', 'ar', 'no', 'us', 'sk', 'xyz', 'fi', 'id', 'cl', 'by', 'nz', 'il', 'ie', 'pt', 'kz', 'io', 'my', 'lt', 'hk', 'cc', 'sg', 'edu', 'pk', 'su', 'bg', 'th', 'top', 'lv', 'hr', 'pe', 'club', 'rs', 'ae', 'az', 'si', 'ph', 'pro', 'ng', 'tk', 'ee', 'asia', 'mobi'];
-export function isUrl(s) {
-    if (!rx_url.test(s))
-        return false;
-    const sLC = s.toLowerCase();
-    for (let i = 0, ii = prefixes.length; i < ii; i++)
-        if (sLC.startsWith(prefixes[i]))
-            return true;
-    for (let i = 0, ii = domains.length; i < ii; i++)
-        if (sLC.endsWith('.' + domains[i]) || sLC.includes('.' + domains[i] + '\/') || sLC.includes('.' + domains[i] + '?'))
-            return true;
-    return false;
-}
 // taken from http://stackoverflow.com/a/16016476/460084
 const sQtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]';
 const sDtext = '[^\\x0d\\x5b-\\x5d\\x80-\\xff]';
@@ -83,53 +80,32 @@ const sLocalPart = sWord + '(\\x2e' + sWord + ')*';
 const sAddrSpec = sLocalPart + '\\x40' + sDomain; // complete RFC822 email address spec
 const sValidEmail = '^' + sAddrSpec + '$'; // as whole string
 const rx_email = new RegExp(sValidEmail);
-export function isEmail(s) {
-    return rx_email.test(s);
-}
-export function parseText(s, excludeEmails, excludeUrls) {
-    const split = s.split(' ');
-    split.forEach((token, idx) => {
-        if (!excludeUrls && isUrl(token)) {
-            split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
+const ce = new CE();
+ce.def({
+    config: {
+        tagName: 'hypo-link',
+        propDefaults: {
+            initTransform: {
+                slotElements: [{}, { slotchange: 'handleSlotChange' }]
+            },
+            updateTransform: {
+                linkedTextParts: [{ innerHTML: ['processedContent'] }]
+            }
+        },
+        actions: {
+            processContent: {
+                ifAllOf: ['rawContent'],
+                actIfKeyIn: ['excludeEmails', 'excludeUrls']
+            },
+            ...tm.doInitTransform,
+            doUpdateTransform: {
+                actIfKeyIn: ['processedContent']
+            }
         }
-        else if (!excludeEmails && isEmail(token)) {
-            split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
-        }
-    });
-    return split.join(' ');
-}
-const refs = { linkedTextPart: '', slotElement: '' };
-const linkProcessedContent = ({ rawContent, self, excludeEmails, excludeUrls }) => {
-    if (rawContent === undefined)
-        return;
-    self.processedContent = parseText(rawContent, excludeEmails, excludeUrls);
-};
-const propActions = [
-    xp.manageMainTemplate,
-    linkProcessedContent,
-    ({ domCache, handleSlotChange }) => ([
-        { [refs.slotElement]: [, { slotchange: handleSlotChange }] },
-        [{ handlersAttached: true }]
-    ]),
-    ({ domCache, processedContent, self }) => ([
-        { [refs.linkedTextPart]: [{ innerHTML: processedContent }] }
-    ]),
-    xp.attachShadow,
-];
-const str = {
-    type: String
-};
-const bool = {
-    type: Boolean
-};
-const propDefMap = {
-    ...xp.props,
-    processedContent: {
-        type: String,
-        stopReactionsIfFalsy: true,
-    }, rawContent: str,
-    excludeEmails: bool, excludeUrls: bool
-};
-const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-xc.letThereBeProps(HypoLink, slicedPropDefs, 'onPropChange');
-xc.define(HypoLink);
+    },
+    complexPropDefaults: {
+        mainTemplate
+    },
+    mixins: [tm.TemplMgmtMixin],
+    superclass: HypoLinkCore
+});

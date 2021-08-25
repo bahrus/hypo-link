@@ -1,39 +1,45 @@
-import {xc, PropAction, PropDef, PropDefMap, IReactor} from 'xtal-element/lib/XtalCore.js';
-import {XtalPattern, xp} from 'xtal-element/lib/XtalPattern.js';
-import {html} from 'xtal-element/lib/html.js';
-import {DOMKeyPE} from 'xtal-element/lib/DOMKeyPE.js';
-import {HypoLinkProps} from './types.js';
+import {CE} from  'trans-render/lib/CE.js';
+import {HypoLinkProps, HypoLinkActions} from './types.js';
+import {tm, TemplMgmtBase} from 'trans-render/lib/TemplMgmtWithPEST.js';
 
-export const mainTemplate = html`
+export const mainTemplate = tm.html`
 <slot style="display:none"></slot>
 <div part=linked-text></div>
 `;
 
-export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
-    static is = 'hypo-link';
-    propActions = propActions;
-    reactor: IReactor = new xp.RxSuppl(this, [
-        {
-            rhsType:Array,
-            ctor: DOMKeyPE
+export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
+
+    processContent(self: this){
+        const {rawContent, excludeEmails, excludeUrls, parseText} = self;
+        return{
+            processedContent: parseText(self, rawContent!, excludeEmails, excludeUrls),
         }
-    ]);
-    clonedTemplate: DocumentFragment | undefined;
-    domCache: any;
-    connectedCallback(){
-        xc.mergeProps<HypoLinkProps>(this, slicedPropDefs, {});
     }
-    onPropChange(name: string, prop: PropDef, nv: any){
-        this.reactor.addToQueue(prop, nv);
+
+    parseText(self: this, s: string, excludeEmails: boolean | undefined, excludeUrls: boolean | undefined){
+        const {isUrl, isEmail} = self;
+        const split = s.split(' ');
+        split.forEach((token, idx) => {
+            if(!excludeUrls && isUrl(self, token)){
+                split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
+            }else if(!excludeEmails && isEmail(self, token)){
+                split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
+            }
+        });
+        return split.join(' ');
     }
-    self = this;
-    refs = refs;
-    mainTemplate = mainTemplate;
-    
-    processedContent: string | undefined;
-    rawContent: string | undefined;
-    excludeEmails: boolean | undefined;
-    excludeUrls: boolean | undefined;
+
+    isUrl(self: this, s: string) {
+        if (!rx_url.test(s)) return false;
+        const sLC = s.toLowerCase();
+        for (let i=0, ii = prefixes.length; i < ii; i++) if (sLC.startsWith(prefixes[i])) return true;
+        for (let i=0, ii = domains.length; i < ii; i++) if (sLC.endsWith('.'+ domains[i]) || sLC.includes('.'+ domains[i]+'\/') ||sLC.includes('.'+ domains[i]+'?')) return true;
+        return false;
+    }
+
+    isEmail(self: this, s: string) {
+        return rx_email.test(s);
+    }
 
     handleSlotChange(e: Event){
         const slot = e.target as HTMLSlotElement;
@@ -53,6 +59,7 @@ export class HypoLink extends HTMLElement implements XtalPattern, HypoLinkProps{
         });
         this.rawContent = text;
     }
+
 }
 
 //https://stackoverflow.com/a/42659038/3320028
@@ -66,13 +73,6 @@ const prefixes = ['http:\/\/', 'https:\/\/', 'ftp:\/\/', 'www.'];
 // taken from https://w3techs.com/technologies/overview/top_level_domain/all
 const domains = ['com','ru','net','org','de','jp','uk','br','pl','in','it','fr','au','info','nl','ir','cn','es','cz','kr','ua','ca','eu','biz','za','gr','co','ro','se','tw','mx','vn','tr','ch','hu','at','be','dk','tv','me','ar','no','us','sk','xyz','fi','id','cl','by','nz','il','ie','pt','kz','io','my','lt','hk','cc','sg','edu','pk','su','bg','th','top','lv','hr','pe','club','rs','ae','az','si','ph','pro','ng','tk','ee','asia','mobi'];
 
-export function isUrl(s: string) {
-    if (!rx_url.test(s)) return false;
-    const sLC = s.toLowerCase();
-    for (let i=0, ii = prefixes.length; i < ii; i++) if (sLC.startsWith(prefixes[i])) return true;
-    for (let i=0, ii = domains.length; i < ii; i++) if (sLC.endsWith('.'+ domains[i]) || sLC.includes('.'+ domains[i]+'\/') ||sLC.includes('.'+ domains[i]+'?')) return true;
-    return false;
-}
 
 // taken from http://stackoverflow.com/a/16016476/460084
 const sQtext = '[^\\x0d\\x22\\x5c\\x80-\\xff]';
@@ -90,55 +90,35 @@ const sAddrSpec = sLocalPart + '\\x40' + sDomain; // complete RFC822 email addre
 const sValidEmail = '^' + sAddrSpec + '$'; // as whole string
 const rx_email = new RegExp(sValidEmail);
 
-export function isEmail(s: string) {
-    return rx_email.test(s);
-}
+export interface HypoLinkCore extends HypoLinkProps{}
 
-export function parseText(s: string, excludeEmails: boolean | undefined, excludeUrls: boolean | undefined){
-    const split = s.split(' ');
-    split.forEach((token, idx) => {
-        if(!excludeUrls && isUrl(token)){
-            split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
-        }else if(!excludeEmails && isEmail(token)){
-            split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
+const ce = new CE<HypoLinkProps & TemplMgmtBase, HypoLinkActions & TemplMgmtBase>();
+
+ce.def({
+    config:{
+        tagName: 'hypo-link',
+        propDefaults: {
+            initTransform:{
+                slotElements:[{},{slotchange:'handleSlotChange'}]
+            },
+            updateTransform:{
+                linkedTextParts: [{innerHTML: ['processedContent']}]
+            }
+        },
+        actions:{
+            processContent:{
+                ifAllOf: ['rawContent'],
+                actIfKeyIn: ['excludeEmails', 'excludeUrls']
+            },
+            ...tm.doInitTransform,
+            doUpdateTransform:{
+                actIfKeyIn: ['processedContent']
+            }
         }
-    });
-    return split.join(' ');
-}
-
-const refs = {linkedTextPart: '', slotElement: ''};
-const linkProcessedContent = ({rawContent, self, excludeEmails, excludeUrls}: HypoLink) => {
-    if(rawContent === undefined) return;
-    self.processedContent = parseText(rawContent, excludeEmails, excludeUrls);
-}
-const propActions = [
-    xp.manageMainTemplate,
-    linkProcessedContent,
-    ({domCache, handleSlotChange}: HypoLink) => ([
-        {[refs.slotElement]: [,{slotchange:handleSlotChange}]},
-        [{handlersAttached: true}]
-    ]),
-    ({domCache, processedContent, self}: HypoLink) => ([
-        {[refs.linkedTextPart]: [{innerHTML: processedContent}]}
-    ]),
-    xp.attachShadow,
-] as PropAction[];
-const str: PropDef = {
-    type: String
-};
-const bool: PropDef = {
-    type: Boolean
-};
-const propDefMap: PropDefMap<HypoLink> = {
-    ...xp.props,
-    processedContent: {
-        type: String,
-        stopReactionsIfFalsy: true,
-    }, rawContent: str,
-    excludeEmails: bool, excludeUrls: bool
-};
-
-const slicedPropDefs = xc.getSlicedPropDefs(propDefMap);
-
-xc.letThereBeProps(HypoLink, slicedPropDefs, 'onPropChange');
-xc.define(HypoLink);
+    },
+    complexPropDefaults:{
+        mainTemplate
+    },
+    mixins:[tm.TemplMgmtMixin],
+    superclass: HypoLinkCore
+});

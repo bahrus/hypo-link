@@ -9,7 +9,7 @@
 		"watch": true
 	},
 	"files":[
-		"hypo-link2.ts"
+		"hypo-link.ts"
 	],
 	"exclude":[
 		"build",
