@@ -1,5 +1,11 @@
 import {CE} from  'trans-render/lib/CE.js';
 import {HypoLinkProps, HypoLinkActions} from './types.js';
+import {tm, TemplMgmtBase} from 'trans-render/lib/TemplMgmtWithPEST.js';
+
+export const mainTemplate = tm.html`
+<slot style="display:none"></slot>
+<div part=linked-text></div>
+`;
 
 export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
 
@@ -35,6 +41,25 @@ export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
         return rx_email.test(s);
     }
 
+    handleSlotChange(e: Event){
+        const slot = e.target as HTMLSlotElement;
+        const nodes = slot.assignedNodes();
+        let text = '';
+        nodes.forEach(node => {
+            //const aNode = node as any;
+            switch(node.nodeType){
+                case 1:
+                    const eNode = node as HTMLElement;
+                    text += eNode.innerText;
+                    break;
+                case 3:
+                    text += node.nodeValue;
+                    break;
+            }
+        });
+        this.rawContent = text;
+    }
+
 }
 
 //https://stackoverflow.com/a/42659038/3320028
@@ -67,17 +92,33 @@ const rx_email = new RegExp(sValidEmail);
 
 export interface HypoLinkCore extends HypoLinkProps{}
 
-const ce = new CE<HypoLinkProps, HypoLinkActions>();
+const ce = new CE<HypoLinkProps & TemplMgmtBase, HypoLinkActions & TemplMgmtBase>();
 
 ce.def({
     config:{
         tagName: 'hypo-link',
+        propDefaults: {
+            initTransform:{
+                slotElements:[{},{slotchange:'handleSlotChange'}]
+            },
+            updateTransform:{
+                linkedTextParts: [{innerHTML: ['processedContent']}]
+            }
+        },
         actions:{
             processContent:{
                 ifAllOf: ['rawContent'],
                 actIfKeyIn: ['excludeEmails', 'excludeUrls']
+            },
+            ...tm.doInitTransform,
+            doUpdateTransform:{
+                actIfKeyIn: ['processedContent']
             }
         }
     },
+    complexPropDefaults:{
+        mainTemplate
+    },
+    mixins:[tm.TemplMgmtMixin],
     superclass: HypoLinkCore
 });

@@ -1,4 +1,9 @@
 import { CE } from 'trans-render/lib/CE.js';
+import { tm } from 'trans-render/lib/TemplMgmtWithPEST.js';
+export const mainTemplate = tm.html `
+<slot style="display:none"></slot>
+<div part=linked-text></div>
+`;
 export class HypoLinkCore extends HTMLElement {
     processContent(self) {
         const { rawContent, excludeEmails, excludeUrls, parseText } = self;
@@ -34,6 +39,24 @@ export class HypoLinkCore extends HTMLElement {
     isEmail(self, s) {
         return rx_email.test(s);
     }
+    handleSlotChange(e) {
+        const slot = e.target;
+        const nodes = slot.assignedNodes();
+        let text = '';
+        nodes.forEach(node => {
+            //const aNode = node as any;
+            switch (node.nodeType) {
+                case 1:
+                    const eNode = node;
+                    text += eNode.innerText;
+                    break;
+                case 3:
+                    text += node.nodeValue;
+                    break;
+            }
+        });
+        this.rawContent = text;
+    }
 }
 //https://stackoverflow.com/a/42659038/3320028
 // taken from https://gist.github.com/dperini/729294
@@ -61,12 +84,28 @@ const ce = new CE();
 ce.def({
     config: {
         tagName: 'hypo-link',
+        propDefaults: {
+            initTransform: {
+                slotElements: [{}, { slotchange: 'handleSlotChange' }]
+            },
+            updateTransform: {
+                linkedTextParts: [{ innerHTML: ['processedContent'] }]
+            }
+        },
         actions: {
             processContent: {
                 ifAllOf: ['rawContent'],
                 actIfKeyIn: ['excludeEmails', 'excludeUrls']
+            },
+            ...tm.doInitTransform,
+            doUpdateTransform: {
+                actIfKeyIn: ['processedContent']
             }
         }
     },
+    complexPropDefaults: {
+        mainTemplate
+    },
+    mixins: [tm.TemplMgmtMixin],
     superclass: HypoLinkCore
 });
