@@ -109,3 +109,4 @@ ce.def({
     mixins: [tm.TemplMgmtMixin],
     superclass: HypoLinkCore
 });
+export const HypoLink = ce.classDef;
