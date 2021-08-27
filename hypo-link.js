@@ -5,12 +5,9 @@ export const mainTemplate = tm.html `
 <div part=linked-text></div>
 `;
 export class HypoLinkCore extends HTMLElement {
-    processContent(self) {
-        const { rawContent, excludeEmails, excludeUrls, parseText } = self;
-        return {
-            processedContent: parseText(self, rawContent, excludeEmails, excludeUrls),
-        };
-    }
+    processContent = ({ rawContent, excludeEmails, excludeUrls, parseText }) => ({
+        processedContent: parseText(this, rawContent, excludeEmails, excludeUrls)
+    });
     parseText(self, s, excludeEmails, excludeUrls) {
         const { isUrl, isEmail } = self;
         const split = s.split(' ');

@@ -9,12 +9,10 @@ export const mainTemplate = tm.html`
 
 export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
 
-    processContent(self: this){
-        const {rawContent, excludeEmails, excludeUrls, parseText} = self;
-        return{
-            processedContent: parseText(self, rawContent!, excludeEmails, excludeUrls),
-        }
-    }
+
+    processContent = ({rawContent, excludeEmails, excludeUrls, parseText}: this) => ({
+        processedContent: parseText(this, rawContent!, excludeEmails, excludeUrls) 
+    } as Partial<this>);
 
     parseText(self: this, s: string, excludeEmails: boolean | undefined, excludeUrls: boolean | undefined){
         const {isUrl, isEmail} = self;
