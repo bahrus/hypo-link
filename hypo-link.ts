@@ -1,6 +1,6 @@
 import {CE} from  'trans-render/lib/CE.js';
 import {HypoLinkProps, HypoLinkActions} from './types.js';
-import {tm, TemplMgmtBase} from 'trans-render/lib/TemplMgmtWithPEST.js';
+import {tm, TemplMgmtActions, TemplMgmtProps} from 'trans-render/lib/mixins/TemplMgmtWithPEST.js';
 
 export const mainTemplate = tm.html`
 <slot style="display:none"></slot>
@@ -9,25 +9,26 @@ export const mainTemplate = tm.html`
 
 export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
 
-
-    processContent = ({rawContent, excludeEmails, excludeUrls, parseText}: this) => ({
-        processedContent: parseText(this, rawContent!, excludeEmails, excludeUrls) 
-    } as Partial<this>);
+    /**
+     * @private
+     */
+    self = this;
+    processContent = processContent;
 
     parseText(self: this, s: string, excludeEmails: boolean | undefined, excludeUrls: boolean | undefined){
         const {isUrl, isEmail} = self;
         const split = s.split(' ');
         split.forEach((token, idx) => {
-            if(!excludeUrls && isUrl(self, token)){
+            if(!excludeUrls && isUrl(token)){
                 split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
-            }else if(!excludeEmails && isEmail(self, token)){
+            }else if(!excludeEmails && isEmail(token)){
                 split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
             }
         });
         return split.join(' ');
     }
 
-    isUrl(self: this, s: string) {
+    isUrl(s: string) {
         if (!rx_url.test(s)) return false;
         const sLC = s.toLowerCase();
         for (let i=0, ii = prefixes.length; i < ii; i++) if (sLC.startsWith(prefixes[i])) return true;
@@ -35,7 +36,7 @@ export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
         return false;
     }
 
-    isEmail(self: this, s: string) {
+    isEmail(s: string) {
         return rx_email.test(s);
     }
 
@@ -59,6 +60,10 @@ export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
     }
 
 }
+
+const processContent = ({self, rawContent, excludeEmails, excludeUrls, parseText}: HypoLinkCore) => ({
+    processedContent: parseText(self, rawContent!, excludeEmails, excludeUrls) 
+} as Partial<HypoLinkProps>);
 
 //https://stackoverflow.com/a/42659038/3320028
 
@@ -90,9 +95,7 @@ const rx_email = new RegExp(sValidEmail);
 
 export interface HypoLinkCore extends HypoLinkProps{}
 
-const ce = new CE<HypoLinkProps & TemplMgmtBase, HypoLinkActions & TemplMgmtBase>();
-
-ce.def({
+const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtActions>({
     config:{
         tagName: 'hypo-link',
         propDefaults: {
@@ -106,11 +109,11 @@ ce.def({
         actions:{
             processContent:{
                 ifAllOf: ['rawContent'],
-                actIfKeyIn: ['excludeEmails', 'excludeUrls']
+                ifKeyIn: ['excludeEmails', 'excludeUrls']
             },
             ...tm.doInitTransform,
             doUpdateTransform:{
-                actIfKeyIn: ['processedContent']
+                ifKeyIn: ['processedContent']
             }
         }
     },
@@ -125,6 +128,6 @@ export const HypoLink = ce.classDef;
 
 declare global {
     interface HTMLElementTagNameMap {
-        "hypo-link": HypoLinkProps & TemplMgmtBase & HypoLinkActions
+        "hypo-link": HypoLinkCore
     }
 }

@@ -1,27 +1,29 @@
 import { CE } from 'trans-render/lib/CE.js';
-import { tm } from 'trans-render/lib/TemplMgmtWithPEST.js';
+import { tm } from 'trans-render/lib/mixins/TemplMgmtWithPEST.js';
 export const mainTemplate = tm.html `
 <slot style="display:none"></slot>
 <div part=linked-text></div>
 `;
 export class HypoLinkCore extends HTMLElement {
-    processContent = ({ rawContent, excludeEmails, excludeUrls, parseText }) => ({
-        processedContent: parseText(this, rawContent, excludeEmails, excludeUrls)
-    });
+    /**
+     * @private
+     */
+    self = this;
+    processContent = processContent;
     parseText(self, s, excludeEmails, excludeUrls) {
         const { isUrl, isEmail } = self;
         const split = s.split(' ');
         split.forEach((token, idx) => {
-            if (!excludeUrls && isUrl(self, token)) {
+            if (!excludeUrls && isUrl(token)) {
                 split[idx] = `<a href="//${token}" target=_blank>${token}</a>`;
             }
-            else if (!excludeEmails && isEmail(self, token)) {
+            else if (!excludeEmails && isEmail(token)) {
                 split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
             }
         });
         return split.join(' ');
     }
-    isUrl(self, s) {
+    isUrl(s) {
         if (!rx_url.test(s))
             return false;
         const sLC = s.toLowerCase();
@@ -33,7 +35,7 @@ export class HypoLinkCore extends HTMLElement {
                 return true;
         return false;
     }
-    isEmail(self, s) {
+    isEmail(s) {
         return rx_email.test(s);
     }
     handleSlotChange(e) {
@@ -55,6 +57,9 @@ export class HypoLinkCore extends HTMLElement {
         this.rawContent = text;
     }
 }
+const processContent = ({ self, rawContent, excludeEmails, excludeUrls, parseText }) => ({
+    processedContent: parseText(self, rawContent, excludeEmails, excludeUrls)
+});
 //https://stackoverflow.com/a/42659038/3320028
 // taken from https://gist.github.com/dperini/729294
 const rx_url = /^(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
@@ -77,8 +82,7 @@ const sLocalPart = sWord + '(\\x2e' + sWord + ')*';
 const sAddrSpec = sLocalPart + '\\x40' + sDomain; // complete RFC822 email address spec
 const sValidEmail = '^' + sAddrSpec + '$'; // as whole string
 const rx_email = new RegExp(sValidEmail);
-const ce = new CE();
-ce.def({
+const ce = new CE({
     config: {
         tagName: 'hypo-link',
         propDefaults: {
@@ -92,11 +96,11 @@ ce.def({
         actions: {
             processContent: {
                 ifAllOf: ['rawContent'],
-                actIfKeyIn: ['excludeEmails', 'excludeUrls']
+                ifKeyIn: ['excludeEmails', 'excludeUrls']
             },
             ...tm.doInitTransform,
             doUpdateTransform: {
-                actIfKeyIn: ['processedContent']
+                ifKeyIn: ['processedContent']
             }
         }
     },

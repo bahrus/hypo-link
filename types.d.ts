@@ -23,5 +23,5 @@ export interface HypoLinkProps{
 }
 
 export interface HypoLinkActions{
-    processContent: (self: this) => Partial<this>
+    processContent: (self: this) => Partial<HypoLinkProps>
 }
