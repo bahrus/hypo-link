@@ -103,7 +103,7 @@ const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtAct
                 slotElements:[{},{slotchange:'handleSlotChange'}]
             },
             updateTransform:{
-                linkedTextParts: [{innerHTML: ['processedContent']}]
+                linkedTextParts: [{innerHTML: 'processedContent'}]
             }
         },
         actions:{

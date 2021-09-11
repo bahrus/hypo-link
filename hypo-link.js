@@ -90,7 +90,7 @@ const ce = new CE({
                 slotElements: [{}, { slotchange: 'handleSlotChange' }]
             },
             updateTransform: {
-                linkedTextParts: [{ innerHTML: ['processedContent'] }]
+                linkedTextParts: [{ innerHTML: 'processedContent' }]
             }
         },
         actions: {
