@@ -11,7 +11,7 @@
     "doc": "custom-elements-manifest analyze"
   },
   "dependencies": {
-    "trans-render": "0.0.398"
+    "trans-render": "0.0.419"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
