@@ -20,7 +20,7 @@ export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
         const split = s.split(' ');
         split.forEach((token, idx) => {
             if(!excludeUrls && isUrl(token)){
-                split[idx] = `<a href="https://${token}" target=_blank>${token}</a>`;
+                split[idx] = `<a href="https://${token}" target=_blank rel=noopener>${token}</a>`;
             }else if(!excludeEmails && isEmail(token)){
                 split[idx] = `<a href="mailto:${token}" target=_blank>${token}</a>`;
             }
