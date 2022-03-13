@@ -38,7 +38,7 @@ export class HypoLinkCore extends HTMLElement {
     isEmail(s) {
         return rx_email.test(s);
     }
-    handleSlotChange(e) {
+    handleSlotChange = (e) => {
         const slot = e.target;
         const nodes = slot.assignedNodes();
         let text = '';
@@ -55,7 +55,7 @@ export class HypoLinkCore extends HTMLElement {
             }
         });
         this.rawContent = text;
-    }
+    };
 }
 const processContent = ({ self, rawContent, excludeEmails, excludeUrls, parseText }) => ({
     processedContent: parseText(self, rawContent, excludeEmails, excludeUrls)
@@ -86,7 +86,8 @@ const ce = new CE({
     config: {
         tagName: 'hypo-link',
         propDefaults: {
-            ...beTransformed,
+            processedContent: '',
+            rawContent: '',
             transform: [
                 {
                     slotElements: [{}, { slotchange: 'handleSlotChange' }]
@@ -98,6 +99,7 @@ const ce = new CE({
             mainTemplate,
         },
         actions: {
+            ...beTransformed,
             processContent: {
                 ifAllOf: ['rawContent'],
                 ifKeyIn: ['excludeEmails', 'excludeUrls']

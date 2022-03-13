@@ -40,7 +40,7 @@ export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
         return rx_email.test(s);
     }
 
-    handleSlotChange(e: Event){
+    handleSlotChange = (e: Event) => {
         const slot = e.target as HTMLSlotElement;
         const nodes = slot.assignedNodes();
         let text = '';
@@ -99,7 +99,8 @@ const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtAct
     config:{
         tagName: 'hypo-link',
         propDefaults: {
-            ...beTransformed,
+            processedContent: '',
+            rawContent: '',
             transform: [
                 {
                     slotElements:[{},{slotchange:'handleSlotChange'}]
@@ -111,6 +112,7 @@ const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtAct
             mainTemplate,  
         },
         actions:{
+            ...beTransformed,
             processContent:{
                 ifAllOf: ['rawContent'],
                 ifKeyIn: ['excludeEmails', 'excludeUrls']
