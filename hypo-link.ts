@@ -123,10 +123,11 @@ const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtAct
     superclass: HypoLinkCore
 });
 
-export const HypoLink = ce.classDef;
+export const HypoLink = ce.classDef!;
 
 declare global {
     interface HTMLElementTagNameMap {
         "hypo-link": HypoLinkCore
     }
 }
+
