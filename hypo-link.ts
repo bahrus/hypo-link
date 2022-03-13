@@ -100,7 +100,6 @@ const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtAct
         tagName: 'hypo-link',
         propDefaults: {
             processedContent: '',
-            rawContent: '',
             transform: [
                 {
                     slotElements:[{},{slotchange:'handleSlotChange'}]

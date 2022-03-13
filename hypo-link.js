@@ -87,7 +87,6 @@ const ce = new CE({
         tagName: 'hypo-link',
         propDefaults: {
             processedContent: '',
-            rawContent: '',
             transform: [
                 {
                     slotElements: [{}, { slotchange: 'handleSlotChange' }]
