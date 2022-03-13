@@ -19,7 +19,6 @@ export interface HypoLinkProps{
 
     processedContent?: string;
 
-    mainTemplate?: HTMLTemplateElement
 }
 
 export interface HypoLinkActions{

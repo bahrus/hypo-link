@@ -1,8 +1,8 @@
 import {CE} from  'trans-render/lib/CE.js';
 import {HypoLinkProps, HypoLinkActions} from './types.js';
-import {tm, TemplMgmtActions, TemplMgmtProps} from 'trans-render/lib/mixins/TemplMgmtWithPEST.js';
+import {TemplMgmtActions, TemplMgmtProps, TemplMgmt, beTransformed} from 'trans-render/lib/mixins/TemplMgmt.js';
 
-export const mainTemplate = tm.html`
+export const mainTemplate = String.raw`
 <slot style="display:none"></slot>
 <div part=linked-text></div>
 `;
@@ -99,28 +99,26 @@ const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtAct
     config:{
         tagName: 'hypo-link',
         propDefaults: {
-            initTransform:{
-                slotElements:[{},{slotchange:'handleSlotChange'}]
-            },
-            updateTransform:{
-                linkedTextParts: [{innerHTML: 'processedContent'}]
-            }
+            ...beTransformed,
+            transform: [
+                {
+                    slotElements:[{},{slotchange:'handleSlotChange'}]
+                },
+                {
+                    linkedTextParts: [{innerHTML: 'processedContent'}]
+                }
+            ],
+            mainTemplate,  
         },
         actions:{
             processContent:{
                 ifAllOf: ['rawContent'],
                 ifKeyIn: ['excludeEmails', 'excludeUrls']
             },
-            ...tm.doInitTransform,
-            doUpdateTransform:{
-                ifKeyIn: ['processedContent']
-            }
         }
     },
-    complexPropDefaults:{
-        mainTemplate
-    },
-    mixins:[tm.TemplMgmtMixin],
+
+    mixins:[TemplMgmt],
     superclass: HypoLinkCore
 });
 

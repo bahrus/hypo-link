@@ -11,12 +11,11 @@
     "doc": "custom-elements-manifest analyze"
   },
   "dependencies": {
-    "trans-render": "0.0.427"
+    "trans-render": "0.0.511"
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "xtal-test": "0.0.51",
-    "@custom-elements-manifest/analyzer": "0.5.6"
+    "xtal-test": "0.0.55"
   },
   "exports": {
     ".": "./hypo-link.js",
