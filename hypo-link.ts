@@ -40,7 +40,7 @@ export class HypoLinkCore extends HTMLElement implements HypoLinkActions{
         return rx_email.test(s);
     }
 
-    handleSlotChange = (e: Event) => {
+    handleSlotChange(e: Event){
         const slot = e.target as HTMLSlotElement;
         const nodes = slot.assignedNodes();
         let text = '';
@@ -102,7 +102,7 @@ const ce = new CE<HypoLinkProps & TemplMgmtProps, HypoLinkActions & TemplMgmtAct
             processedContent: '',
             transform: [
                 {
-                    slotElements:[{},{slotchange:'handleSlotChange'}]
+                    slotElements:[{},{slotchange:'.handleSlotChange'}]
                 },
                 {
                     linkedTextParts: [{innerHTML: 'processedContent'}]
