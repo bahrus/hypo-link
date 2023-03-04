@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@skypack/package-check": "0.2.2",
-    "xtal-test": "0.0.55"
+    "xtal-test": "0.0.57"
   },
   "exports": {
     ".": "./hypo-link.js",
